@@ -1,5 +1,5 @@
 import { getServerAuthSession } from "~/server/auth";
-import { Box, Flex } from "@mantine/core";
+import { Flex } from "@mantine/core";
 
 import TakeList from "./_components/Takes/TakeList";
 import { TakeFetchTarget } from "~/server/api/routers/take";

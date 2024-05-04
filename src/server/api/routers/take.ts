@@ -1,6 +1,5 @@
 import { TakeReactionType } from "@prisma/client";
 import { type Content } from "@tiptap/react";
-import { connect } from "http2";
 import { z } from "zod";
 
 import {
