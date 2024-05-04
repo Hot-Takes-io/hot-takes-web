@@ -7,6 +7,11 @@ import TypeScriptLogo from "src/app/assets/images/svg/ts-logo-128.svg";
 
 const powerdBy = [
   {
+    name: "GitHub",
+    link: "https://github.com",
+    logo: "https://avatars.githubusercontent.com/u/9919?s=36&v=4",
+  },
+  {
     name: "Vercel",
     link: "https://vercel.com",
     logo: "https://avatars.githubusercontent.com/u/14985020?s=36&v=4",
@@ -20,6 +25,11 @@ const powerdBy = [
     name: "TypeScript",
     link: "https://www.typescriptlang.org/",
     logo: TypeScriptLogo as StaticImport,
+  },
+  {
+    name: "React",
+    link: "https://react.dev/",
+    logo: "https://avatars.githubusercontent.com/u/6412038?s=36&v=4",
   },
   {
     name: "Prisma",
@@ -51,7 +61,7 @@ const powerdBy = [
 const PoweredBy = () => {
   return (
     <Flex flex="1" align="center" gap="xs">
-      &nbsp;Powered By:
+      &nbsp;Powered by:
       {powerdBy.map((sponsor) => (
         <TooltipFloating key={sponsor.name} label={sponsor.name} color="black">
           <Anchor href={sponsor.link} target="_blank" rel="noreferrer">
@@ -64,7 +74,7 @@ const PoweredBy = () => {
           </Anchor>
         </TooltipFloating>
       ))}
-      Sponsored By: No one 😢 (yet!)
+      and sponsored by: No one 😢 (yet!)
     </Flex>
   );
 };

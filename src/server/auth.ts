@@ -53,10 +53,15 @@ export const authOptions: NextAuthOptions = {
     signIn: async ({ user, account, profile }) => {
       if (account?.provider === "github") {
         const githubProfile = profile as ExtendedProfile;
-        await db.user.update({
+        const dbUser = await db.user.findUnique({
           where: { id: user.id },
-          data: { githubLogin: githubProfile?.login },
         });
+        if (dbUser) {
+          await db.user.update({
+            where: { id: user.id },
+            data: { githubLogin: githubProfile?.login },
+          });
+        }
 
         console.log({ user, account, profile });
       }
