@@ -38,7 +38,12 @@ export const userRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const data = { ...input };
+      const data:
+        | { handle: string }
+        | { name: string }
+        | { email: string }
+        | { bio: JSON }
+        | object = { ...input };
 
       const user = await ctx.db.user.update({
         where: { id: ctx.session.user.id },
