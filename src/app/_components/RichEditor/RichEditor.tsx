@@ -133,7 +133,6 @@ const RichEditor = ({
             <Button
               loading={isLoading}
               onClick={() => {
-                console.log(editor?.getJSON());
                 const content = editor?.getJSON();
                 if (content) {
                   onSubmit(content);

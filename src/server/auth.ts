@@ -1,4 +1,5 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
+
 import {
   type Profile,
   getServerSession,
@@ -6,6 +7,7 @@ import {
   type NextAuthOptions,
 } from "next-auth";
 import { type Adapter } from "next-auth/adapters";
+import { JWT } from "next-auth/jwt";
 import GitHubProvider from "next-auth/providers/github";
 
 import { env } from "~/env";
@@ -21,15 +23,17 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id: string;
+      handle?: string;
       // ...other properties
       // role: UserRole;
     } & DefaultSession["user"];
   }
 
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
+  interface User {
+    handle?: string;
+    //   // ...other properties
+    //   // role: UserRole;
+  }
 }
 
 interface ExtendedProfile extends Profile {
@@ -48,27 +52,33 @@ export const authOptions: NextAuthOptions = {
       user: {
         ...session.user,
         id: user.id,
+        handle: user.handle,
       },
     }),
-    signIn: async ({ user, account, profile }) => {
+    signIn: async ({ user, account, profile, email, credentials }) => {
       if (account?.provider === "github") {
         const githubProfile = profile as ExtendedProfile;
-        const dbUser = await db.user.findUnique({
-          where: { id: user.id },
+        if (!user.email) {
+          return false;
+        }
+        const dbUser = await db.user.findFirst({
+          where: { email: user.email },
         });
-        if (dbUser) {
-          await db.user.update({
-            where: { id: user.id },
+
+        if (!dbUser) {
+          console.log("\n\n\n\ncreatingUser\n\n\n\n");
+          await db.user.create({
             data: {
-              githubLogin: githubProfile?.login,
-              handle: githubProfile?.login,
+              email: user.email,
+              name: user.name,
+              image: user.image,
+              githubLogin: githubProfile.login,
+              handle: githubProfile.login,
             },
           });
         }
-
-        console.log({ user, account, profile });
       }
-      console.log({ user, account, profile });
+
       return true;
     },
   },
@@ -77,6 +87,7 @@ export const authOptions: NextAuthOptions = {
     GitHubProvider({
       clientId: env.GITHUB_ID,
       clientSecret: env.GITHUB_SECRET,
+      allowDangerousEmailAccountLinking: true,
     }),
     /**
      * ...add more providers here.

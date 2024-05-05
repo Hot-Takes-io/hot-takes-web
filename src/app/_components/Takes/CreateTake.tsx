@@ -39,7 +39,6 @@ const CreateTake = () => {
     ],
   });
   const handleSubmit = (content: Content) => {
-    console.log(editor?.getJSON());
     if (content) {
       createTake({ content });
     }

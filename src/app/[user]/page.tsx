@@ -16,8 +16,6 @@ const UserView = ({ params }: { params: { user: string } }) => {
   const { mutate: updateUser } = api.user.updateUser.useMutation();
   const user = userData?.user;
 
-  console.log(user);
-
   return (
     <>
       {!user ? (

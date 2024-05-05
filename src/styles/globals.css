@@ -3,6 +3,7 @@ body {
   height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .mantine-RichTextEditor-root {
@@ -27,6 +28,10 @@ body {
   display: flex;
   flex-direction: column;
   flex: 1;
+}
+
+.pointer {
+  cursor: pointer;
 }
 
 @media (max-width: 768px) {

@@ -5,10 +5,11 @@ import React from "react";
 import CreateTake from "../Takes/CreateTake";
 import PoweredBy from "./PoweredBy";
 import Link from "next/link";
-import { IconLogout, IconSettings } from "@tabler/icons-react";
+import { IconLogout, IconSettings, IconUser } from "@tabler/icons-react";
 
 const Header = () => {
   const session = useSession();
+
   return (
     <Flex justify="space-between" align="center" mah="60px" px="sm" flex="1">
       <Flex>
@@ -29,11 +30,22 @@ const Header = () => {
         {session.data?.user.id && (
           <Flex gap="sm">
             <CreateTake />
-            <Menu shadow="md" width={200}>
+            <Menu
+              shadow="md"
+              width={200}
+              transitionProps={{ transition: "slide-left", duration: 350 }}
+            >
               <Menu.Target>
-                <Avatar src={session.data?.user.image} />
+                <Avatar className="pointer" src={session.data?.user.image} />
               </Menu.Target>
               <Menu.Dropdown>
+                <Anchor
+                  component={Link}
+                  td="none"
+                  href={`/${session.data?.user.handle}`}
+                >
+                  <Menu.Item leftSection={<IconUser />}>Profile</Menu.Item>
+                </Anchor>
                 <Menu.Item leftSection={<IconSettings />}>Settings</Menu.Item>
                 <Menu.Item
                   leftSection={<IconLogout />}
