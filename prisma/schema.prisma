@@ -45,23 +45,24 @@ model Session {
 }
 
 model User {
-    id             String           @id @default(cuid())
-    name           String?
-    email          String?          @unique
-    emailVerified  DateTime?
-    image          String?
-    githubLogin    String?
-    accounts       Account[]
-    sessions       Session[]
-    bio            String?
-    handle         String?          @unique
-    takes          Take[]
-    comments       Comment[]
-    alterEgos      AlterEgo[]
-    followers      Follower[]       @relation("Follower")
-    following      Follower[]       @relation("Following")
-    takeReactions  TakeReaction[]
-    UserInvitation UserInvitation[]
+    id              String           @id @default(cuid())
+    name            String?
+    email           String?          @unique
+    emailVerified   DateTime?
+    image           String?
+    githubLogin     String?
+    accounts        Account[]
+    sessions        Session[]
+    bio             Json             @default("{}")
+    handle          String?          @unique
+    takes           Take[]
+    comments        Comment[]
+    alterEgos       AlterEgo[]
+    followers       Follower[]       @relation("Follower")
+    following       Follower[]       @relation("Following")
+    takeReactions   TakeReaction[]
+    userInvitations UserInvitation[]
+    userBadges      UserBadge[]
 }
 
 model UserInvitation {
@@ -72,6 +73,18 @@ model UserInvitation {
     invitedBy   User     @relation(fields: [invitedById], references: [id])
     invitedById String
     accepted    Boolean  @default(false)
+}
+
+model UserBadge {
+    id          Int      @id @default(autoincrement())
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    name        String
+    description String
+    imageURL    String
+    limit       Int
+    user        User     @relation(fields: [userId], references: [id])
+    userId      String
 }
 
 model Follower {

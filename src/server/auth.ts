@@ -59,7 +59,10 @@ export const authOptions: NextAuthOptions = {
         if (dbUser) {
           await db.user.update({
             where: { id: user.id },
-            data: { githubLogin: githubProfile?.login },
+            data: {
+              githubLogin: githubProfile?.login,
+              handle: githubProfile?.login,
+            },
           });
         }
 

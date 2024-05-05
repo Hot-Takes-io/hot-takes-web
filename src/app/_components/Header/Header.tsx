@@ -1,16 +1,19 @@
 "use client";
-import { Avatar, Badge, Button, Flex, Title } from "@mantine/core";
+import { Anchor, Avatar, Badge, Button, Flex, Title } from "@mantine/core";
 import { SessionProvider, signOut, useSession } from "next-auth/react";
 import React from "react";
 import CreateTake from "../Takes/CreateTake";
 import PoweredBy from "./PoweredBy";
+import Link from "next/link";
 
 const Header = () => {
   const session = useSession();
   return (
     <Flex justify="space-between" align="center" h="60px" px="sm">
       <Flex>
-        <Title>🔥 Hot-Takes.io</Title>
+        <Anchor component={Link} href="/" td="none" c="gray">
+          <Title>🔥 Hot-Takes.io</Title>
+        </Anchor>
         <Badge
           variant="gradient"
           gradient={{ from: "red", to: "yellow", deg: 30 }}

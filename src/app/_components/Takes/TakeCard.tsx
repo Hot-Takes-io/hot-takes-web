@@ -1,10 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Link, RichTextEditor } from "@mantine/tiptap";
-import { type Content, useEditor } from "@tiptap/react";
 
-import StarterKit from "@tiptap/starter-kit";
+import { type Content } from "@tiptap/react";
 
 import {
   Avatar,
@@ -15,16 +13,16 @@ import {
   Badge,
   Loader,
   Button,
+  Anchor,
 } from "@mantine/core";
 
 import { IconDotsVertical } from "@tabler/icons-react";
 import { formatDistanceToNow } from "date-fns";
-import Underline from "@tiptap/extension-underline";
-import Superscript from "@tiptap/extension-superscript";
-import SubScript from "@tiptap/extension-subscript";
-import Highlight from "@tiptap/extension-highlight";
+
 import { api } from "~/trpc/react";
 import { TakeReactionType } from "@prisma/client";
+import RichEditor from "../RichEditor/RichEditor";
+import Link from "next/link";
 
 type Props = {
   content: Content;
@@ -49,19 +47,6 @@ const TakeCard = ({ by, content, createdAt, commentsCount, takeId }: Props) => {
     onSettled() {
       void utils.take.getTakeReactions.invalidate({ takeId });
     },
-  });
-
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Underline,
-      Link,
-      Superscript,
-      SubScript,
-      Highlight,
-    ],
-    content,
-    editable: false,
   });
 
   const handleReaction = (reactionType: TakeReactionType) => {
@@ -105,7 +90,9 @@ const TakeCard = ({ by, content, createdAt, commentsCount, takeId }: Props) => {
     <Card mb="sm">
       <Flex justify="space-between" mb="sm">
         <Flex align="center" gap="sm">
-          <Avatar src={by.image ?? ""} />
+          <Anchor component={Link} href={`/${by.handle}`}>
+            <Avatar src={by.image ?? ""} />
+          </Anchor>
           <Title order={4}>{by.name}</Title>
           <Title order={5}>@{by.handle}</Title>
           <Title order={5}>· {formatDistanceToNow(createdAt)}</Title>
@@ -118,9 +105,9 @@ const TakeCard = ({ by, content, createdAt, commentsCount, takeId }: Props) => {
           </ActionIcon>
         </Flex>
       </Flex>
-      <RichTextEditor editor={editor}>
-        <RichTextEditor.Content />
-      </RichTextEditor>
+
+      <RichEditor content={content} readonly mah="20vh" />
+
       <Flex justify="space-between" mt="sm">
         <Flex align="center" gap="xs">
           <ActionIcon

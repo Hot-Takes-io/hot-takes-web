@@ -46,6 +46,7 @@ const UnauthenticatedLandingSection = () => {
             <Flex gap="sm">
               <Box>
                 <Badge
+                  size="lg"
                   variant="gradient"
                   gradient={{ from: "red", to: "yellow", deg: 30 }}
                 >
@@ -60,6 +61,7 @@ const UnauthenticatedLandingSection = () => {
             <Flex gap="sm">
               <Box>
                 <Badge
+                  size="lg"
                   variant="gradient"
                   gradient={{ from: "brown", to: "gray", deg: 30 }}
                 >
@@ -73,7 +75,7 @@ const UnauthenticatedLandingSection = () => {
             </Flex>
             <Flex gap="sm">
               <Box>
-                <Badge variant="outline" color="gray">
+                <Badge size="lg" variant="outline" color="gray">
                   ¯\_(ツ)_/¯
                 </Badge>
               </Box>

@@ -1,4 +1,23 @@
+.mantine-RichTextEditor-root {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.mantine-TypographyStylesProvider-root {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: auto;
+}
 .mantine-RichTextEditor-content {
-  height: 20vh !important;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
   overflow-y: auto !important;
+}
+
+.ProseMirror {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
