@@ -6,10 +6,11 @@ import CreateTake from "../Takes/CreateTake";
 import PoweredBy from "./PoweredBy";
 import Link from "next/link";
 import { IconLogout, IconSettings, IconUser } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
 
 const Header = () => {
   const session = useSession();
-
+  const router = useRouter();
   return (
     <Flex justify="space-between" align="center" mah="60px" px="sm" flex="1">
       <Flex>
@@ -49,7 +50,10 @@ const Header = () => {
                 <Menu.Item leftSection={<IconSettings />}>Settings</Menu.Item>
                 <Menu.Item
                   leftSection={<IconLogout />}
-                  onClick={() => signOut()}
+                  onClick={async () => {
+                    await signOut();
+                    router.push("/");
+                  }}
                 >
                   Sign Out
                 </Menu.Item>

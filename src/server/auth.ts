@@ -38,6 +38,7 @@ declare module "next-auth" {
 
 interface ExtendedProfile extends Profile {
   login: string;
+  bio: string;
 }
 
 /**
@@ -66,7 +67,6 @@ export const authOptions: NextAuthOptions = {
         });
 
         if (!dbUser) {
-          console.log("\n\n\n\ncreatingUser\n\n\n\n");
           await db.user.create({
             data: {
               email: user.email,
@@ -74,6 +74,16 @@ export const authOptions: NextAuthOptions = {
               image: user.image,
               githubLogin: githubProfile.login,
               handle: githubProfile.login,
+              bio: {
+                type: "doc",
+                content: [
+                  {
+                    type: "paragraph",
+                    attrs: { textAlign: "left" },
+                    content: [{ text: `${githubProfile.bio}`, type: "text" }],
+                  },
+                ],
+              },
             },
           });
         }
