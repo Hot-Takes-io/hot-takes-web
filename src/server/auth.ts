@@ -7,7 +7,7 @@ import {
   type NextAuthOptions,
 } from "next-auth";
 import { type Adapter } from "next-auth/adapters";
-import { JWT } from "next-auth/jwt";
+
 import GitHubProvider from "next-auth/providers/github";
 
 import { env } from "~/env";
@@ -55,7 +55,7 @@ export const authOptions: NextAuthOptions = {
         handle: user.handle,
       },
     }),
-    signIn: async ({ user, account, profile, email, credentials }) => {
+    signIn: async ({ user, account, profile }) => {
       if (account?.provider === "github") {
         const githubProfile = profile as ExtendedProfile;
         if (!user.email) {
