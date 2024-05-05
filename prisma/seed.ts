@@ -54,24 +54,28 @@ const main = async () => {
         content: [
           {
             type: "heading",
-            attrs: { level: 1, textAlign: "left" },
+            attrs: { level: 1, textAlign: "center" },
             content: [
               {
                 text: "TypeScript",
                 type: "text",
                 marks: [
-                  { type: "bold" },
-                  { type: "textStyle", attrs: { color: "#7048E8" } },
+                  { type: "textStyle", attrs: { color: "rgb(59, 91, 219)" } },
                 ],
               },
-              { text: " > ", type: "text", marks: [{ type: "bold" }] },
+              { type: "hardBreak" },
+              {
+                text: ">",
+                type: "text",
+                marks: [
+                  { type: "textStyle", attrs: { color: "rgb(240, 62, 62)" } },
+                ],
+              },
+              { type: "hardBreak" },
               {
                 text: "JavaScript",
                 type: "text",
-                marks: [
-                  { type: "bold" },
-                  { type: "textStyle", attrs: { color: "#F59F00" } },
-                ],
+                marks: [{ type: "textStyle", attrs: { color: "yellow" } }],
               },
             ],
           },

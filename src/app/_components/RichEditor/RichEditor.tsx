@@ -102,7 +102,7 @@ const RichEditor = ({
                 <IconColorPicker size="1rem" stroke={1.5} />
               </RichTextEditor.Control>
               <RichTextEditor.Color color="#F03E3E" />
-              <RichTextEditor.Color color="#7048E8" />
+              <RichTextEditor.Color color="#3b5bdb" />
               <RichTextEditor.Color color="#1098AD" />
               <RichTextEditor.Color color="#37B24D" />
               <RichTextEditor.Color color="#F59F00" />
