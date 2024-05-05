@@ -60,7 +60,7 @@ const powerdBy = [
 
 const PoweredBy = () => {
   return (
-    <Flex flex="1" align="center" gap="xs">
+    <Flex flex="1" align="center" gap="xs" className="hide-on-mobile">
       &nbsp;Powered by:
       {powerdBy.map((sponsor) => (
         <TooltipFloating key={sponsor.name} label={sponsor.name} color="black">

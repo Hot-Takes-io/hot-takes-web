@@ -10,7 +10,7 @@ export default async function Home() {
 
   return (
     <Flex flex="1" direction="column">
-      <Flex flex="1" p="sm" gap="sm" wrap="wrap">
+      <Flex flex="1" p="sm" gap="sm" wrap="wrap-reverse">
         <TakeList
           title="Trending Takes from all nerds"
           listType={TakeFetchTarget.All}

@@ -15,7 +15,7 @@ import React, { useState } from "react";
 const UnauthenticatedLandingSection = () => {
   const [isSigningIn, setIsSigningIn] = useState(false);
   return (
-    <Flex flex="1">
+    <Flex flex="1" miw="375px">
       <Card>
         <CardSection p="md">
           <Text>

@@ -93,9 +93,11 @@ const TakeCard = ({ by, content, createdAt, commentsCount, takeId }: Props) => {
           <Anchor component={Link} href={`/${by.handle}`}>
             <Avatar src={by.image ?? ""} />
           </Anchor>
-          <Title order={4}>{by.name}</Title>
-          <Title order={5}>@{by.handle}</Title>
-          <Title order={5}>· {formatDistanceToNow(createdAt)}</Title>
+          <Flex wrap="wrap">
+            <Title order={4}>{by.name}</Title>
+            <Title order={5}>@{by.handle}</Title>
+            <Title order={5}>· {formatDistanceToNow(createdAt)}</Title>
+          </Flex>
         </Flex>
         <Flex align="center" gap="sm">
           {reactionBadgeContent()}
