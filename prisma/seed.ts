@@ -50,9 +50,9 @@ const main = async () => {
   }
   await db.userBadge.create({
     data: {
-      name: "First User Badge",
-      description: "This is the first user badge",
-      imageURL: "/badges/first.png",
+      name: "Creator User Badge",
+      description: "This is the creator of the app",
+      imageURL: "/badges/creator.jpeg",
       limit: 1,
       users: {
         connect: {
@@ -67,13 +67,20 @@ const main = async () => {
       {
         name: "Alpha User Badge",
         description: "This is worn by alpha users",
-        imageURL: "/badges/alpha.png",
+        imageURL: "/badges/alpha.jpeg",
         limit: 200,
       },
       {
         name: "Beta User Badge",
         description: "This is worn by beta users",
-        imageURL: "/badges/beta.jpg",
+        imageURL: "/badges/beta.jpeg",
+        limit: 500,
+      },
+      {
+        name: "KickStarter Badge",
+        description:
+          "This is worn by users who supported the KickStarter Campaign",
+        imageURL: "/badges/beta.jpeg",
         limit: 500,
       },
     ],
