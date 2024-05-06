@@ -1,10 +1,4 @@
-import {
-  Flex,
-  Title,
-  Text,
-  ScrollArea,
-  ScrollAreaAutosize,
-} from "@mantine/core";
+import { Flex, Title, Text, ScrollAreaAutosize } from "@mantine/core";
 import { db } from "~/server/db";
 import ProfileBadge, {
   ProfileBadgeSize,

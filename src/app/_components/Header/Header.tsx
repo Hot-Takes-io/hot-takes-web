@@ -15,7 +15,10 @@ const Header = () => {
     <Flex justify="space-between" align="center" mah="60px" px="sm" flex="1">
       <Flex>
         <Anchor component={Link} href="/" td="none" c="gray">
-          <Title id="nav-logo">🔥 Hot-Takes.io</Title>
+          <Flex align="center">
+            <Avatar src="/logos/hot-takes.png" />
+            <Title id="nav-logo">Hot-Takes.io</Title>
+          </Flex>
         </Anchor>
         <Badge
           className="hide-on-mobile"
