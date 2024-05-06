@@ -52,7 +52,7 @@ const main = async () => {
     data: {
       name: "Creator User Badge",
       description: "This is the creator of the app",
-      imageURL: "/badges/creator.jpeg",
+      imageURL: "/badges/creator.png",
       limit: 1,
       users: {
         connect: {
@@ -67,20 +67,20 @@ const main = async () => {
       {
         name: "Alpha User Badge",
         description: "This is worn by alpha users",
-        imageURL: "/badges/alpha.jpeg",
+        imageURL: "/badges/alpha.png",
         limit: 200,
       },
       {
         name: "Beta User Badge",
         description: "This is worn by beta users",
-        imageURL: "/badges/beta.jpeg",
+        imageURL: "/badges/beta.png",
         limit: 500,
       },
       {
         name: "KickStarter Badge",
         description:
           "This is worn by users who supported the KickStarter Campaign",
-        imageURL: "/badges/beta.jpeg",
+        imageURL: "/badges/kickstarter.png",
         limit: 500,
       },
     ],

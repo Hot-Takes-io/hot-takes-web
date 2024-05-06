@@ -11,16 +11,26 @@ type Props = {
 };
 
 export enum ProfileBadgeSize {
+  xxxs = "xxxs",
+  xxs = "xxs",
   xs = "xs",
   sm = "sm",
   md = "md",
   lg = "lg",
   xl = "xl",
+  xxl = "xxl",
+  xxxl = "xxxl",
 }
 
 const ProfileBadge = ({ size, image, name, withLink }: Props) => {
   let badgeSize = 32;
   switch (size) {
+    case ProfileBadgeSize.xxxs:
+      badgeSize = 12;
+      break;
+    case ProfileBadgeSize.xxs:
+      badgeSize = 16;
+      break;
     case ProfileBadgeSize.xs:
       badgeSize = 24;
       break;
@@ -35,6 +45,12 @@ const ProfileBadge = ({ size, image, name, withLink }: Props) => {
       break;
     case ProfileBadgeSize.xl:
       badgeSize = 96;
+      break;
+    case ProfileBadgeSize.xxl:
+      badgeSize = 128;
+      break;
+    case ProfileBadgeSize.xxxl:
+      badgeSize = 256;
       break;
   }
 

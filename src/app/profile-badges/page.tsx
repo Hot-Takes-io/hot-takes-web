@@ -7,20 +7,19 @@ import ProfileBadge, {
 const ProfileBadgesView = async () => {
   const profileBadges = await db.userBadge.findMany();
   return (
-    <Flex flex="1">
+    <Flex flex="1" wrap="wrap" gap="sm">
       {profileBadges.map((profileBadge) => (
         <Flex
           direction="column"
           align="center"
           key={profileBadge.id}
           p="sm"
-          wrap="wrap"
-          gap="sm"
+          w="25rem"
         >
           <ProfileBadge
             name={profileBadge.name}
             image={profileBadge.imageURL}
-            size={ProfileBadgeSize.xl}
+            size={ProfileBadgeSize.xxxl}
           />
 
           <Title order={2}>{profileBadge.name}</Title>
