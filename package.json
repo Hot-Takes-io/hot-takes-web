@@ -19,6 +19,7 @@
     "@mantine/modals": "^7.9.0",
     "@mantine/tiptap": "^7.8.1",
     "@prisma/client": "^5.10.2",
+    "@sentry/nextjs": "^7.113.0",
     "@t3-oss/env-nextjs": "^0.10.1",
     "@tabler/icons-react": "^3.3.0",
     "@tanstack/react-query": "^5.25.0",
