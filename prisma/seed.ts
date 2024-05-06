@@ -25,6 +25,21 @@ const main = async () => {
       handle: "SuarezLuis",
       image: "https://avatars.githubusercontent.com/u/20325995?v=4",
       githubLogin: "SuarezLuis",
+      bio: {
+        type: "doc",
+        content: [
+          {
+            type: "heading",
+            attrs: { level: 1, textAlign: "left" },
+            content: [
+              {
+                text: "I made this 🔥 thing, hope you like it.... ",
+                type: "text",
+              },
+            ],
+          },
+        ],
+      },
     },
   });
 
@@ -39,12 +54,29 @@ const main = async () => {
       description: "This is the first user badge",
       imageURL: "/badges/first.png",
       limit: 1,
-      user: {
+      users: {
         connect: {
           id: user.id,
         },
       },
     },
+  });
+
+  await db.userBadge.createMany({
+    data: [
+      {
+        name: "Alpha User Badge",
+        description: "This is worn by alpha users",
+        imageURL: "/badges/alpha.png",
+        limit: 200,
+      },
+      {
+        name: "Beta User Badge",
+        description: "This is worn by beta users",
+        imageURL: "/badges/beta.jpg",
+        limit: 500,
+      },
+    ],
   });
 
   await db.take.create({

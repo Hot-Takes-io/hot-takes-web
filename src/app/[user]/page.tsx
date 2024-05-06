@@ -1,13 +1,15 @@
 "use client";
-import { Box, Flex, Title, Image, Avatar } from "@mantine/core";
+import { Box, Flex, Title, Image } from "@mantine/core";
 
 import NextImage from "next/image";
-import React from "react";
 import { api } from "~/trpc/react";
 
 import RichEditor from "../_components/RichEditor/RichEditor";
 import { SessionProvider, useSession } from "next-auth/react";
 import { type Content } from "@tiptap/react";
+import ProfileBadge, {
+  ProfileBadgeSize,
+} from "../_components/ProfileBadge/ProfileBadge";
 
 const UserView = ({ params }: { params: { user: string } }) => {
   const userHandle = params.user;
@@ -41,7 +43,13 @@ const UserView = ({ params }: { params: { user: string } }) => {
             </Title>
             <Flex p="sm" gap="sm">
               {user.userBadges.map((userBadge) => (
-                <Avatar size="lg" key={userBadge.id} src={userBadge.imageURL} />
+                <ProfileBadge
+                  key={userBadge.id}
+                  size={ProfileBadgeSize.md}
+                  image={userBadge.imageURL}
+                  name={userBadge.name}
+                  withLink
+                />
               ))}
             </Flex>
           </Box>

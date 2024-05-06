@@ -7,6 +7,8 @@ import { ColorSchemeScript, MantineProvider, Flex } from "@mantine/core";
 
 import App from "./_components/App";
 import Header from "./_components/Header/Header";
+import ViewTakeModal from "./_components/Modals/ViewTakeModal";
+import { ModalsProvider } from "@mantine/modals";
 
 const roboto = Roboto_Mono({
   subsets: ["latin"],
@@ -43,8 +45,12 @@ export default function RootLayout({
         <TRPCReactProvider>
           <MantineProvider forceColorScheme="dark">
             <Flex flex="1" direction="column">
-              <Header />
-              <App>{children}</App>
+              <ModalsProvider
+                modals={{ demonstration: ViewTakeModal /* ...other modals */ }}
+              >
+                <Header />
+                <App>{children}</App>
+              </ModalsProvider>
             </Flex>
           </MantineProvider>
         </TRPCReactProvider>

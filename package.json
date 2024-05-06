@@ -16,6 +16,7 @@
     "@auth/prisma-adapter": "^1.4.0",
     "@mantine/core": "^7.8.1",
     "@mantine/hooks": "^7.8.1",
+    "@mantine/modals": "^7.9.0",
     "@mantine/tiptap": "^7.8.1",
     "@prisma/client": "^5.10.2",
     "@t3-oss/env-nextjs": "^0.10.1",

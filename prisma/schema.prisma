@@ -83,8 +83,7 @@ model UserBadge {
     description String
     imageURL    String
     limit       Int
-    user        User     @relation(fields: [userId], references: [id])
-    userId      String
+    users       User[]
 }
 
 model Follower {

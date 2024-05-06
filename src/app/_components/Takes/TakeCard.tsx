@@ -23,6 +23,7 @@ import { api } from "~/trpc/react";
 import { TakeReactionType } from "@prisma/client";
 import RichEditor from "../RichEditor/RichEditor";
 import Link from "next/link";
+import { modals } from "@mantine/modals";
 
 type Props = {
   content: Content;
@@ -158,7 +159,18 @@ const TakeCard = ({ by, content, createdAt, commentsCount, takeId }: Props) => {
           </Badge>
         </Flex>
         <Flex align="center">
-          <Button variant="transparent">
+          <Button
+            variant="transparent"
+            onClick={() => {
+              modals.openContextModal({
+                modal: "demonstration",
+                title: "Luis",
+                innerProps: {
+                  takeId,
+                },
+              });
+            }}
+          >
             {commentsCount} comment{commentsCount === 1 ? "" : "s"}
           </Button>
         </Flex>
