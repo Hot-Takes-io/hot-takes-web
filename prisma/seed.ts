@@ -72,15 +72,29 @@ const main = async () => {
       },
       {
         name: "Beta User Badge",
-        description: "This is worn by beta users",
+        description: "This badge is worn by beta users",
         imageURL: "/badges/beta.png",
         limit: 500,
       },
       {
         name: "KickStarter Badge",
         description:
-          "This is worn by users who supported the KickStarter Campaign",
+          "This badge is worn by users who supported the KickStarter Campaign",
         imageURL: "/badges/kickstarter.png",
+        limit: 500,
+      },
+      {
+        name: "Collaborator Badge",
+        description:
+          "This badge is worn by users who collaborate to the project via GitHub or other means",
+        imageURL: "/badges/collaborator.png",
+        limit: 500,
+      },
+      {
+        name: "Bug Hunter Badge",
+        description:
+          "This badge is worn by users who reported important bugs in the project.",
+        imageURL: "/badges/bug-hunter.png",
         limit: 500,
       },
     ],
