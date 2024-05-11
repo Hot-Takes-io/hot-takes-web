@@ -3,7 +3,7 @@ import { Anchor, Flex, TooltipFloating } from "@mantine/core";
 import { type StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import React from "react";
-import TypeScriptLogo from "src/app/assets/images/svg/ts-logo-128.svg";
+import TypeScriptLogo from "src/app/_assets/images/svg/ts-logo-128.svg";
 
 const powerdBy = [
   {
