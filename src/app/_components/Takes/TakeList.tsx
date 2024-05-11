@@ -25,6 +25,7 @@ const TakeList = async ({ title, listType }: Props) => {
                 name: take.createdBy.name ?? "",
                 image: take.createdBy.image ?? "",
                 handle: take.createdBy.handle ?? "",
+                id: take.createdBy.id,
               }}
               content={take.content as Content}
               createdAt={take.createdAt}

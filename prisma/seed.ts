@@ -44,10 +44,20 @@ const main = async () => {
   });
 
   const user = await db.user.findFirst();
-  if (!user) {
+  if (!user?.email) {
     console.error("No user found please add at least one user");
     return;
   }
+
+  await db.userInvitation.create({
+    data: {
+      email: user.email,
+      invitedBy: { connect: { id: user.id } },
+      notes: "This is the first user",
+      accepted: true,
+    },
+  });
+
   await db.userBadge.create({
     data: {
       name: "Creator User Badge",

@@ -1,11 +1,25 @@
 "use client";
-import { Anchor, Avatar, Badge, Flex, Menu, Title } from "@mantine/core";
+import {
+  Anchor,
+  Avatar,
+  Badge,
+  Box,
+  Flex,
+  Menu,
+  ThemeIcon,
+  Title,
+} from "@mantine/core";
 import { SessionProvider, signOut, useSession } from "next-auth/react";
 import React from "react";
 import CreateTake from "../Takes/CreateTake";
 import PoweredBy from "./PoweredBy";
 import Link from "next/link";
-import { IconLogout, IconSettings, IconUser } from "@tabler/icons-react";
+import {
+  IconBell,
+  IconLogout,
+  IconSettings,
+  IconUser,
+} from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 
 const Header = () => {
@@ -32,8 +46,32 @@ const Header = () => {
       </Flex>
       <Flex align="center" justify="flex-end" gap="sm" flex="1">
         {session.data?.user.id && (
-          <Flex gap="sm">
+          <Flex gap="sm" align="center">
             <CreateTake />
+            <Box pos="relative">
+              <ThemeIcon
+                autoContrast
+                variant="gradient"
+                size="lg"
+                aria-label="Gradient action icon"
+                gradient={
+                  false
+                    ? { from: "red", to: "yellow", deg: 30 }
+                    : { from: "blue", to: "cyan", deg: 90 }
+                }
+              >
+                <IconBell />
+                <Badge
+                  size="xs"
+                  color="blue"
+                  pos="absolute"
+                  top="-5px"
+                  right="-5px"
+                >
+                  0
+                </Badge>
+              </ThemeIcon>
+            </Box>
             <Menu
               shadow="md"
               width={200}

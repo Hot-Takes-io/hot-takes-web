@@ -45,6 +45,7 @@ export const takeRouter = createTRPCRouter({
                   followers: {
                     some: {
                       followerId: ctx.session?.user.id,
+                      deletedAt: null,
                     },
                   },
                 },
@@ -109,5 +110,23 @@ export const takeRouter = createTRPCRouter({
         },
       });
       return result;
+    }),
+  fetchOneTakeWithComments: protectedProcedure
+    .input(z.object({ takeId: z.number() }))
+    .query(async ({ ctx, input }) => {
+      return ctx.db.take.findUnique({
+        where: { id: input.takeId },
+        select: {
+          id: true,
+          createdBy: true,
+          createdAt: true,
+          content: true,
+          _count: {
+            select: {
+              comments: true,
+            },
+          },
+        },
+      });
     }),
 });

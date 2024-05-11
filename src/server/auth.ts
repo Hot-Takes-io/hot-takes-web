@@ -57,11 +57,11 @@ export const authOptions: NextAuthOptions = {
       },
     }),
     signIn: async ({ user, account, profile }) => {
+      if (!user.email) {
+        return false;
+      }
       if (account?.provider === "github") {
         const githubProfile = profile as ExtendedProfile;
-        if (!user.email) {
-          return false;
-        }
         const dbUser = await db.user.findFirst({
           where: { email: user.email },
         });
@@ -88,8 +88,19 @@ export const authOptions: NextAuthOptions = {
           });
         }
       }
-
-      return true;
+      const invitation = await db.userInvitation.findUnique({
+        where: { email: user.email },
+      });
+      if (invitation) {
+        if (!invitation.accepted) {
+          await db.userInvitation.update({
+            where: { email: user.email },
+            data: { accepted: true },
+          });
+        }
+        return true;
+      }
+      return false;
     },
   },
   adapter: PrismaAdapter(db) as Adapter,

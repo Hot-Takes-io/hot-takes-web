@@ -1,19 +1,11 @@
 "use client";
-import {
-  Card,
-  Text,
-  CardSection,
-  Flex,
-  Badge,
-  Box,
-  Button,
-} from "@mantine/core";
+import { Card, Text, CardSection, Flex, Badge, Box } from "@mantine/core";
 import { IconArrowBigLeftLines } from "@tabler/icons-react";
-import { signIn } from "next-auth/react";
-import React, { useState } from "react";
+
+import React from "react";
+import SignInButton from "./SignInButton";
 
 const UnauthenticatedLandingSection = () => {
-  const [isSigningIn, setIsSigningIn] = useState(false);
   return (
     <Flex flex="1" miw="375px">
       <Card>
@@ -106,23 +98,7 @@ const UnauthenticatedLandingSection = () => {
             </Text>
           </Flex>
           <Flex justify="center" p="md">
-            <Button
-              loading={isSigningIn}
-              onClick={async () => {
-                setIsSigningIn(true);
-                signIn("github")
-                  .then((params) => {
-                    console.info("Signed in", params);
-                  })
-                  .catch((e) => {
-                    console.error("Failed to sign in", e);
-                  });
-              }}
-              variant="gradient"
-              gradient={{ from: "red", to: "yellow", deg: 30 }}
-            >
-              Sign In
-            </Button>
+            <SignInButton />
           </Flex>
           <Text mt="sm">
             PS. Don&apos;t you f***ing dare to call this site &#34;Social

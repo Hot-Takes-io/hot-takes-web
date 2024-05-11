@@ -58,8 +58,8 @@ model User {
     takes           Take[]
     comments        Comment[]
     alterEgos       AlterEgo[]
-    followers       Follower[]       @relation("Follower")
-    following       Follower[]       @relation("Following")
+    followers       Follow[]         @relation("Follower")
+    following       Follow[]         @relation("Following")
     takeReactions   TakeReaction[]
     userInvitations UserInvitation[]
     userBadges      UserBadge[]
@@ -69,9 +69,10 @@ model UserInvitation {
     id          Int      @id @default(autoincrement())
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
-    email       String
+    email       String   @unique
     invitedBy   User     @relation(fields: [invitedById], references: [id])
     invitedById String
+    notes       String
     accepted    Boolean  @default(false)
 }
 
@@ -86,14 +87,17 @@ model UserBadge {
     users       User[]
 }
 
-model Follower {
-    id          Int      @id @default(autoincrement())
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
-    follower    User     @relation(fields: [followerId], references: [id], name: "Follower")
-    following   User     @relation(fields: [followingId], references: [id], name: "Following")
-    followerId  String
-    followingId String
+model Follow {
+    id         Int       @id @default(autoincrement())
+    createdAt  DateTime  @default(now())
+    updatedAt  DateTime  @updatedAt
+    deletedAt  DateTime?
+    user       User      @relation(fields: [userId], references: [id], name: "Follower")
+    userId     String
+    follower   User      @relation(fields: [followerId], references: [id], name: "Following")
+    followerId String
+
+    @@unique([followerId, userId])
 }
 
 model VerificationToken {
@@ -105,7 +109,7 @@ model VerificationToken {
 }
 
 model AlterEgo {
-    id        Int      @id @default(autoincrement())
+    id        String   @id @default(cuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     user      User     @relation(fields: [userId], references: [id])
@@ -134,7 +138,7 @@ model Comment {
     updatedAt   DateTime @updatedAt
     createdBy   User     @relation(fields: [createdById], references: [id])
     createdById String
-    content     String
+    body        String
     imageUrls   String[]
     take        Take?    @relation(fields: [takeId], references: [id])
     takeId      Int?
@@ -157,4 +161,17 @@ model TakeReaction {
 
     // the combination of createdById and takeId must be unique
     @@unique([createdById, takeId], name: "userTake")
+}
+
+enum UserNotificationType {
+    NewFollower
+    NewComment
+    NewReaction
+}
+
+model UserNotification {
+    id               Int                  @id @default(autoincrement())
+    createdAt        DateTime             @default(now())
+    updatedAt        DateTime             @updatedAt
+    notificationType UserNotificationType
 }

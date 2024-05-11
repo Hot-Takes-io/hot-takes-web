@@ -8,6 +8,26 @@ import {
 } from "~/server/api/trpc";
 
 export const userRouter = createTRPCRouter({
+  getUserById: protectedProcedure
+    .input(z.object({ userId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      return ctx.db.user.findFirst({
+        where: { id: input.userId },
+        select: {
+          id: true,
+          name: true,
+          handle: true,
+          image: true,
+          _count: {
+            select: {
+              followers: { where: { deletedAt: null } },
+              following: { where: { deletedAt: null } },
+              comments: true,
+            },
+          },
+        },
+      });
+    }),
   getUser: publicProcedure
     .input(z.object({ handle: z.string() }))
     .query(async ({ ctx, input }) => {
@@ -50,5 +70,52 @@ export const userRouter = createTRPCRouter({
         data,
       });
       return { success: true, user };
+    }),
+  followUser: protectedProcedure
+    .input(z.object({ userId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.follow.upsert({
+        where: {
+          followerId_userId: {
+            followerId: ctx.session.user.id,
+            userId: input.userId,
+          },
+        },
+        create: {
+          follower: { connect: { id: ctx.session.user.id } },
+          user: { connect: { id: input.userId } },
+        },
+        update: { deletedAt: null },
+      });
+    }),
+
+  unfollowUser: protectedProcedure
+    .input(z.object({ userId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.follow.update({
+        where: {
+          followerId_userId: {
+            followerId: ctx.session.user.id,
+            userId: input.userId,
+          },
+        },
+        data: {
+          deletedAt: new Date(),
+        },
+      });
+    }),
+  isFollowingUser: protectedProcedure
+    .input(z.object({ userId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const follow = await ctx.db.follow.findUnique({
+        where: {
+          followerId_userId: {
+            followerId: ctx.session.user.id,
+            userId: input.userId,
+          },
+          deletedAt: null,
+        },
+      });
+      return { isFollowing: !!follow };
     }),
 });
