@@ -14,7 +14,7 @@ const roboto = Roboto_Mono({
 
 export const metadata = {
   title: "Hot Takes",
-  description: "The Dev Arena for Hot Takes 🔥",
+  description: "The Web Arena for Hot Takes 🔥",
   icons: [
     {
       rel: "apple-touch-icon",
