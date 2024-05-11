@@ -32,10 +32,6 @@ const FollowUserButton = ({ size, userId }: Props) => {
     console.log("Debug", followData);
   }, [followData]);
 
-  if (session.data?.user.id === userId || !isAuthenticated) {
-    return null;
-  }
-
   const { mutate: follow } = api.user.followUser.useMutation({
     onSettled: () => {
       void invalidateQueries();
@@ -60,7 +56,9 @@ const FollowUserButton = ({ size, userId }: Props) => {
     void utils.user.isFollowingUser.invalidate();
     void utils.user.getUserById.invalidate();
   };
-
+  if (session.data?.user.id === userId || !isAuthenticated) {
+    return null;
+  }
   return (
     <Button
       loading={isLoading}
