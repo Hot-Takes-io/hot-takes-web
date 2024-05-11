@@ -17,14 +17,25 @@ type Props = {
 
 const FollowUserButton = ({ size, userId }: Props) => {
   const [isFollowing, setIsFollowing] = React.useState(false);
-  const { data: followData, isLoading } = api.user.isFollowingUser.useQuery({
-    userId: userId ?? "",
-  });
+
+  const session = useSession();
+  const isAuthenticated = session.status === "authenticated";
+  const { data: followData, isLoading } = api.user.isFollowingUser.useQuery(
+    {
+      userId: userId ?? "",
+    },
+    { enabled: isAuthenticated }
+  );
 
   useEffect(() => {
     setIsFollowing(followData?.isFollowing ?? false);
     console.log("Debug", followData);
   }, [followData]);
+
+  if (session.data?.user.id === userId || !isAuthenticated) {
+    return null;
+  }
+
   const { mutate: follow } = api.user.followUser.useMutation({
     onSettled: () => {
       void invalidateQueries();
@@ -49,10 +60,7 @@ const FollowUserButton = ({ size, userId }: Props) => {
     void utils.user.isFollowingUser.invalidate();
     void utils.user.getUserById.invalidate();
   };
-  const session = useSession();
-  if (session.data?.user.id === userId) {
-    return null;
-  }
+
   return (
     <Button
       loading={isLoading}
