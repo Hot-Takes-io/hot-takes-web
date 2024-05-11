@@ -1,3 +1,5 @@
+"use client";
+
 import { Anchor, Avatar, Box, Flex, Title } from "@mantine/core";
 import { formatDistanceToNow } from "date-fns";
 import Link from "next/link";

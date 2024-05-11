@@ -4,12 +4,12 @@ import { Box, Flex, Title, Image } from "@mantine/core";
 import NextImage from "next/image";
 import { api } from "~/trpc/react";
 
-import RichEditor from "../_components/RichEditor/RichEditor";
+import RichEditor from "../../_components/RichEditor/RichEditor";
 import { SessionProvider, useSession } from "next-auth/react";
 import { type Content } from "@tiptap/react";
 import ProfileBadge, {
   ProfileBadgeSize,
-} from "../_components/ProfileBadge/ProfileBadge";
+} from "../../_components/ProfileBadge/ProfileBadge";
 
 const UserView = ({ params }: { params: { user: string } }) => {
   const userHandle = params.user;

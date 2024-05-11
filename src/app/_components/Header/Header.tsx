@@ -84,7 +84,7 @@ const Header = () => {
                 <Anchor
                   component={Link}
                   td="none"
-                  href={`/${session.data?.user.handle}`}
+                  href={`/user/${session.data?.user.handle}`}
                 >
                   <Menu.Item leftSection={<IconUser />}>Profile</Menu.Item>
                 </Anchor>
