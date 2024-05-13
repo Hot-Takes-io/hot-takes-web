@@ -100,7 +100,7 @@ export const authOptions: NextAuthOptions = {
         }
         return true;
       }
-      return false;
+      return true;
     },
   },
   adapter: PrismaAdapter(db) as Adapter,
