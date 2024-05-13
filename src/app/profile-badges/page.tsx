@@ -1,19 +1,15 @@
-import {
-  Flex,
-  // Title, Text,
-  ScrollAreaAutosize,
-} from "@mantine/core";
-// import { db } from "~/server/db";
-// import ProfileBadge, {
-//   ProfileBadgeSize,
-// } from "../_components/ProfileBadge/ProfileBadge";
+import { Flex, Title, Text, ScrollAreaAutosize } from "@mantine/core";
+import { db } from "~/server/db";
+import ProfileBadge, {
+  ProfileBadgeSize,
+} from "../_components/ProfileBadge/ProfileBadge";
 
 const ProfileBadgesView = async () => {
-  // const profileBadges = await db.userBadge.findMany();
+  const profileBadges = await db.userBadge.findMany();
   return (
     <ScrollAreaAutosize component={Flex} flex="1" mah="calc(100vh - 63px)">
       <Flex wrap="wrap">
-        {/* {profileBadges.map((profileBadge) => (
+        {profileBadges.map((profileBadge) => (
           <Flex
             direction="column"
             align="center"
@@ -33,7 +29,7 @@ const ProfileBadgesView = async () => {
               <Title order={5}>Limit</Title>:<Text>{profileBadge.limit}</Text>
             </Flex>
           </Flex>
-        ))} */}
+        ))}
       </Flex>
     </ScrollAreaAutosize>
   );
