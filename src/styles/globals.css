@@ -41,4 +41,7 @@ body {
   .hide-on-mobile {
     display: none;
   }
+  body {
+    overflow: auto;
+  }
 }
