@@ -21,7 +21,7 @@ const CardUserHeader = ({ createdAt, userId }: Props) => {
 
   return (
     <Flex align="center" gap="sm">
-      <Anchor component={Link} href={`/${handle}`}>
+      <Anchor component={Link} href={`/user/${handle}`}>
         <Avatar src={image} />
       </Anchor>
       <Flex wrap="wrap" gap="sm">
