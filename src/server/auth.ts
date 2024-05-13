@@ -80,7 +80,9 @@ export const authOptions: NextAuthOptions = {
                   {
                     type: "paragraph",
                     attrs: { textAlign: "left" },
-                    content: [{ text: `${githubProfile.bio}`, type: "text" }],
+                    content: [
+                      { text: `${githubProfile.bio ?? ""}`, type: "text" },
+                    ],
                   },
                 ],
               },
