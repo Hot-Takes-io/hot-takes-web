@@ -10,7 +10,7 @@ type Props = {
   listType: TakeFetchTarget;
 };
 const TakeList = async ({ title, listType }: Props) => {
-  const takes = await api.take.fetch({ fetchTarget: listType });
+  const takes = await api.take.get({ fetchTarget: listType });
   return (
     <Flex flex="1" direction="column" miw="325px">
       <Title order={3} mx="auto">

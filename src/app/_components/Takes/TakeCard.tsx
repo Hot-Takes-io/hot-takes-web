@@ -100,7 +100,7 @@ const TakeCard = ({
   };
 
   return (
-    <Card mb="sm">
+    <Card mb="sm" miw="350px">
       {isTakeLoading ? (
         <Skeleton height="150px" />
       ) : (

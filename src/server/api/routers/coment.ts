@@ -31,4 +31,16 @@ export const commentRouter = createTRPCRouter({
         },
       });
     }),
+  getCommentsByUser: protectedProcedure
+    .input(z.object({ userId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      return ctx.db.comment.findMany({
+        where: { createdById: input.userId },
+        include: {
+          take: {
+            select: { id: true, content: true, createdBy: true },
+          },
+        },
+      });
+    }),
 });

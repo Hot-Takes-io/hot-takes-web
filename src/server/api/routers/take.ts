@@ -33,10 +33,10 @@ export const takeRouter = createTRPCRouter({
       }
       return { success: false, error: "No content provided" };
     }),
-  fetch: publicProcedure
+  get: publicProcedure
     .input(z.object({ fetchTarget: z.nativeEnum(TakeFetchTarget) }))
     .query(async ({ ctx, input }) => {
-      return ctx.db.take.findMany({
+      return await ctx.db.take.findMany({
         where:
           input.fetchTarget === TakeFetchTarget.All
             ? {}
@@ -50,6 +50,31 @@ export const takeRouter = createTRPCRouter({
                   },
                 },
               },
+        select: {
+          id: true,
+          createdBy: true,
+          createdAt: true,
+          content: true,
+          _count: {
+            select: {
+              comments: true,
+            },
+          },
+        },
+        orderBy: [{ createdAt: "desc" }, { takeReactions: { _count: "desc" } }],
+      });
+    }),
+  getUserTakes: publicProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.take.findMany({
+        where: {
+          createdById: input.userId,
+        },
         select: {
           id: true,
           createdBy: true,
@@ -111,7 +136,7 @@ export const takeRouter = createTRPCRouter({
       });
       return result;
     }),
-  fetchOneTakeWithComments: protectedProcedure
+  getOneTakeWithComments: protectedProcedure
     .input(z.object({ takeId: z.number() }))
     .query(async ({ ctx, input }) => {
       return ctx.db.take.findUnique({

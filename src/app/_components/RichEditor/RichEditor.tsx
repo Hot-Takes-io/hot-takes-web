@@ -22,6 +22,7 @@ type Props = {
   readonly?: boolean;
   content?: Content;
   mah?: string | number;
+  keepContentOnCancel?: boolean;
 };
 
 const RichEditor = ({
@@ -33,6 +34,7 @@ const RichEditor = ({
   readonly,
   content,
   mah,
+  keepContentOnCancel,
 }: Props) => {
   const editor = useEditor({
     extensions: [
@@ -53,7 +55,7 @@ const RichEditor = ({
     <Flex direction="column" flex="1">
       <RichTextEditor editor={editor} mah={mah ?? "unset"}>
         {!readonly && (
-          <RichTextEditor.Toolbar sticky stickyOffset={60}>
+          <RichTextEditor.Toolbar sticky>
             <RichTextEditor.ControlsGroup>
               <RichTextEditor.Bold />
               <RichTextEditor.Italic />
@@ -122,7 +124,9 @@ const RichEditor = ({
             <Button
               color="red"
               onClick={() => {
-                editor?.commands.clearContent();
+                if (!keepContentOnCancel) {
+                  editor?.commands.clearContent();
+                }
                 onCancel();
               }}
             >

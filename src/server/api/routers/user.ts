@@ -118,4 +118,20 @@ export const userRouter = createTRPCRouter({
       });
       return { isFollowing: !!follow };
     }),
+  getUserFollowers: protectedProcedure
+    .input(z.object({ userId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      return ctx.db.follow.findMany({
+        where: { userId: input.userId, deletedAt: null },
+        include: { follower: true },
+      });
+    }),
+  getUserFollowing: protectedProcedure
+    .input(z.object({ userId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      return ctx.db.follow.findMany({
+        where: { followerId: input.userId, deletedAt: null },
+        include: { user: true },
+      });
+    }),
 });

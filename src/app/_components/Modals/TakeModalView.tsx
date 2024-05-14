@@ -30,7 +30,7 @@ const TakeModalView = ({ innerProps }: Props) => {
   });
 
   const { data: take, isLoading: isTakeLoading } =
-    api.take.fetchOneTakeWithComments.useQuery({
+    api.take.getOneTakeWithComments.useQuery({
       takeId: innerProps.takeId,
     });
 
@@ -39,10 +39,10 @@ const TakeModalView = ({ innerProps }: Props) => {
       void utils.comment.getTakeComments.invalidate({
         takeId: innerProps.takeId,
       });
-      void utils.take.fetchOneTakeWithComments.invalidate({
+      void utils.take.getOneTakeWithComments.invalidate({
         takeId: innerProps.takeId,
       });
-      void utils.take.fetch.invalidate();
+      void utils.take.get.invalidate();
       void utils.take.getTakeReactions.invalidate();
       // invalidate the take list from server
       router.refresh();
