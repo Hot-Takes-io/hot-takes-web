@@ -1,8 +1,9 @@
 import { Card, Text } from "@mantine/core";
-import { type RouterOutput } from "~/server/api/root";
-import CardUserHeader from "../CardUserHeader";
 
-type Props = { comment: RouterOutput["comment"]["getTakeComments"][0] };
+import CardUserHeader from "../CardUserHeader";
+import type { RouterOutputs } from "~/trpc/react";
+
+type Props = { comment: RouterOutputs["comment"]["getTakeComments"][0] };
 
 const CommentCard = ({ comment }: Props) => {
   return (
