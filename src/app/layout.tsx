@@ -4,6 +4,7 @@ import { TRPCReactProvider } from "~/trpc/react";
 import "@mantine/core/styles.css";
 import "@mantine/tiptap/styles.css";
 import { ColorSchemeScript, MantineProvider, Flex } from "@mantine/core";
+import { Analytics } from "@vercel/analytics/react";
 
 import App from "./_components/App";
 import Header from "./_components/Header/Header";
