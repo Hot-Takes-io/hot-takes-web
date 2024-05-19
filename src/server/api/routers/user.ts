@@ -8,6 +8,25 @@ import {
 } from "~/server/api/trpc";
 
 export const userRouter = createTRPCRouter({
+  getAllUsers: publicProcedure.query(async ({ ctx }) => {
+    return ctx.db.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        handle: true,
+        image: true,
+        _count: {
+          select: {
+            followers: { where: { deletedAt: null } },
+            following: { where: { deletedAt: null } },
+            takes: true,
+            comments: true,
+          },
+        },
+      },
+      orderBy: { createdAt: "asc" },
+    });
+  }),
   getUserById: publicProcedure
     .input(z.object({ userId: z.string() }))
     .query(async ({ ctx, input }) => {

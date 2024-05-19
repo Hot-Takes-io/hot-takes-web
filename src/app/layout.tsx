@@ -57,6 +57,7 @@ export default function RootLayout({
       </head>
       <body className={roboto.className}>
         <TRPCReactProvider>
+          <Analytics />
           <MantineProvider forceColorScheme="dark">
             <Flex flex="1" direction="column">
               <Header />
