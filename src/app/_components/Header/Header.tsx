@@ -16,6 +16,7 @@ import PoweredBy from "./PoweredBy";
 import Link from "next/link";
 import {
   IconBell,
+  IconBrandDiscordFilled,
   IconLogout,
   IconSettings,
   IconUser,
@@ -31,7 +32,9 @@ const Header = () => {
         <Anchor component={Link} href="/" td="none" c="gray">
           <Flex align="center">
             <Avatar src="/logos/hot-takes.png" />
-            <Title id="nav-logo">Hot-Takes.io</Title>
+            <Title className="hide-on-mobile" id="nav-logo">
+              Hot-Takes.io
+            </Title>
           </Flex>
         </Anchor>
         <Badge
@@ -43,6 +46,20 @@ const Header = () => {
           Alpha 0.0.1
         </Badge>
         <PoweredBy />
+        <Flex gap="sm" align="center">
+          <Anchor
+            td="none"
+            href="https://discord.gg/CeJY9YSFGj"
+            target="_blank"
+          >
+            <Flex gap="sm" align="center" flex="1" pl="sm">
+              <Title className="hide-on-mobile" order={4}>
+                Contact
+              </Title>
+              <IconBrandDiscordFilled size={24} />
+            </Flex>
+          </Anchor>
+        </Flex>
       </Flex>
       <Flex align="center" justify="flex-end" gap="sm" flex="1">
         {session.data?.user.id && (

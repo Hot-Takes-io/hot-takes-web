@@ -74,7 +74,7 @@ const PoweredBy = () => {
           </Anchor>
         </TooltipFloating>
       ))}
-      and sponsored by: No one 😢 (yet!)
+      and sponsored by: none 😢 (yet!)
     </Flex>
   );
 };
