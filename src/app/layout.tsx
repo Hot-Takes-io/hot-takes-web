@@ -75,7 +75,7 @@ export default async function RootLayout({
           <Analytics />
           <MantineProvider forceColorScheme="dark">
             <Flex flex="1" direction="column">
-              <Header session={session} />
+              <Header />
               <App>{renderChildren()}</App>
             </Flex>
           </MantineProvider>
