@@ -7,7 +7,7 @@ import { ColorSchemeScript, MantineProvider, Flex } from "@mantine/core";
 import { Analytics } from "@vercel/analytics/react";
 
 import App from "./_components/App";
-import Header from "./_components/Header/Header";
+
 import { getServerAuthSession } from "~/server/auth";
 import React from "react";
 
@@ -75,7 +75,6 @@ export default async function RootLayout({
           <Analytics />
           <MantineProvider forceColorScheme="dark">
             <Flex flex="1" direction="column">
-              <Header />
               <App>{renderChildren()}</App>
             </Flex>
           </MantineProvider>
