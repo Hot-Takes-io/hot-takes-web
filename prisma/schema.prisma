@@ -183,6 +183,8 @@ model UserNotification {
     takeId           Int?
     follower         Follow?              @relation(fields: [followerId], references: [id])
     followerId       Int?
+    reactionType     TakeReactionType?
+    commentBody      String?
     user             User                 @relation(fields: [userId], references: [id])
     userId           String
     readAt           DateTime?

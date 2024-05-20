@@ -15,7 +15,7 @@ const CommentCard = ({ comment }: Props) => {
         createdAt={comment.createdAt}
         userId={comment.createdBy.id}
       />
-      <Text>{comment.body}</Text>
+      <Text style={{ whiteSpace: "pre-wrap" }}>{comment.body}</Text>
     </Card>
   );
 };

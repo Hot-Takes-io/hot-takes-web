@@ -8,6 +8,7 @@ import {
   Button,
   Avatar,
   Card,
+  Text,
 } from "@mantine/core";
 
 import NextImage from "next/image";
@@ -24,10 +25,13 @@ import { useState } from "react";
 
 import TakeCard from "~/app/_components/Takes/TakeCard";
 import { useSession } from "next-auth/react";
+import { modals } from "@mantine/modals";
+import { ModalNames } from "~/app/_components/Modals";
+import { useRouter } from "next/navigation";
 
 const UserView = ({ params }: { params: { user: string } }) => {
   const session = useSession();
-
+  const router = useRouter();
   const [isEditingBio, setIsEditingBio] = useState(false);
   const userHandle = params.user;
 
@@ -59,7 +63,7 @@ const UserView = ({ params }: { params: { user: string } }) => {
 
   const { mutate: updateUser } = api.user.updateUser.useMutation();
   const user = userData?.user;
-  console.log("debug", userTakes);
+
   const isAccountOwner = session.data?.user?.handle === userHandle;
   return (
     <>
@@ -158,15 +162,35 @@ const UserView = ({ params }: { params: { user: string } }) => {
               <Flex direction="column" flex="1" gap="sm">
                 <Title order={4}>Comments</Title>
                 {userComments?.map((comment) => (
-                  <Card key={comment.id}>{comment.body}</Card>
+                  <Card
+                    style={{ whiteSpace: "pre-wrap", cursor: "pointer" }}
+                    key={comment.id}
+                    onClick={() => {
+                      modals.openContextModal({
+                        modal: ModalNames.TakeModalView,
+                        innerProps: {
+                          takeId: comment.takeId,
+                        },
+                        size: "xl",
+                      });
+                    }}
+                  >
+                    {comment.body}
+                  </Card>
                 ))}
               </Flex>
               <Box flex="1">
                 <Title order={4}>Followers</Title>
                 {userFollowers?.map((follower) => (
                   <Flex key={follower.id} align="center" gap="sm" py="sm">
-                    <Avatar src={follower.follower.image} />@
-                    {follower.follower.handle}
+                    <Avatar
+                      src={follower.follower.image}
+                      style={{ cursor: "pointer" }}
+                      onClick={() =>
+                        router.push(`/user/${follower.follower.handle}`)
+                      }
+                    />
+                    <Text>@{follower.follower.handle}</Text>
                   </Flex>
                 ))}
               </Box>
@@ -174,8 +198,14 @@ const UserView = ({ params }: { params: { user: string } }) => {
                 <Title order={4}>Following</Title>
                 {userFollowing?.map((following) => (
                   <Flex key={following.id} align="center" gap="sm" py="sm">
-                    <Avatar src={following.user.image} />@
-                    {following.user.handle}
+                    <Avatar
+                      src={following.user.image}
+                      style={{ cursor: "pointer" }}
+                      onClick={() =>
+                        router.push(`/user/${following.user.handle}`)
+                      }
+                    />
+                    <Text>@{following.user.handle}</Text>
                   </Flex>
                 ))}
               </Box>

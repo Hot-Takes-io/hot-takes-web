@@ -16,7 +16,6 @@ const createPrismaClient = () => {
   });
   prisma.$use(async (params, next) => {
     await onModelChange(params, prisma);
-
     return next(params);
   });
   return prisma;

@@ -25,6 +25,7 @@ export const onTakeReactionChange = async (
             user: { connect: { id: take?.createdById } },
             take: { connect: { id: takeId } },
             notificationType: UserNotificationType.NewReaction,
+            reactionType: create.type,
           },
         });
       }

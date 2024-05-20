@@ -29,7 +29,6 @@ const FollowUserButton = ({ size, userId }: Props) => {
 
   useEffect(() => {
     setIsFollowing(followData?.isFollowing ?? false);
-    console.log("Debug", followData);
   }, [followData]);
 
   const { mutate: follow } = api.user.followUser.useMutation({

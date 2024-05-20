@@ -1,3 +1,4 @@
+import { UserNotificationType } from "@prisma/client";
 import { type Content } from "@tiptap/react";
 import { z } from "zod";
 
@@ -93,7 +94,7 @@ export const userRouter = createTRPCRouter({
   followUser: protectedProcedure
     .input(z.object({ userId: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      return ctx.db.follow.upsert({
+      const result = await ctx.db.follow.upsert({
         where: {
           followerId_userId: {
             followerId: ctx.session.user.id,
@@ -106,6 +107,14 @@ export const userRouter = createTRPCRouter({
         },
         update: { deletedAt: null },
       });
+      await ctx.db.userNotification.create({
+        data: {
+          user: { connect: { id: input.userId } },
+          follower: { connect: { id: result.id } },
+          notificationType: UserNotificationType.NewFollower,
+        },
+      });
+      return result;
     }),
 
   unfollowUser: protectedProcedure

@@ -13,7 +13,7 @@ export const onCommentChange = async (
     const data = args.data;
     const commentByUserId = data?.createdBy?.connect?.id;
     const takeId = data?.take?.connect?.id;
-    console.log("Here");
+
     if (takeId && commentByUserId) {
       const take = await prisma.take.findUnique({
         where: {
@@ -26,6 +26,7 @@ export const onCommentChange = async (
             user: { connect: { id: take?.createdById } },
             take: { connect: { id: takeId } },
             notificationType: UserNotificationType.NewComment,
+            commentBody: data.body,
           },
         });
       }

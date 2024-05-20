@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  Flex,
-  Loader,
-  LoadingOverlay,
-  ScrollAreaAutosize,
-  Title,
-} from "@mantine/core";
-import React from "react";
+import { Flex, Loader, ScrollAreaAutosize, Title } from "@mantine/core";
 
 import TakeCard from "./TakeCard";
 import { type Content } from "@tiptap/react";
