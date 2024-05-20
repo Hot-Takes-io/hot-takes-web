@@ -21,16 +21,13 @@ import ProfileBadge, {
 } from "../../_components/ProfileBadge/ProfileBadge";
 
 import { useState } from "react";
-import { type Session } from "next-auth";
-import TakeCard from "~/app/_components/Takes/TakeCard";
 
-const UserView = ({
-  params,
-  session,
-}: {
-  params: { user: string };
-  session: Session | null;
-}) => {
+import TakeCard from "~/app/_components/Takes/TakeCard";
+import { useSession } from "next-auth/react";
+
+const UserView = ({ params }: { params: { user: string } }) => {
+  const session = useSession();
+
   const [isEditingBio, setIsEditingBio] = useState(false);
   const userHandle = params.user;
 
@@ -63,7 +60,7 @@ const UserView = ({
   const { mutate: updateUser } = api.user.updateUser.useMutation();
   const user = userData?.user;
   console.log("debug", userTakes);
-  const isAccountOwner = session?.user?.handle === userHandle;
+  const isAccountOwner = session.data?.user?.handle === userHandle;
   return (
     <>
       {!user ? (
