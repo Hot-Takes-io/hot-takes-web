@@ -10,11 +10,11 @@ type Props = { children: React.ReactNode };
 
 const App = ({ children }: Props) => {
   return (
-    <ModalsProvider modals={{ ...Modals /* ...other modals */ }}>
-      <SessionProvider>
+    <SessionProvider>
+      <ModalsProvider modals={{ ...Modals /* ...other modals */ }}>
         <Flex flex="1">{children}</Flex>
-      </SessionProvider>
-    </ModalsProvider>
+      </ModalsProvider>
+    </SessionProvider>
   );
 };
 
