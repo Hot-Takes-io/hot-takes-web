@@ -9,7 +9,7 @@ import {
   ThemeIcon,
   Title,
 } from "@mantine/core";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import React from "react";
 import CreateTake from "../Takes/CreateTake";
 import PoweredBy from "./PoweredBy";
@@ -22,14 +22,10 @@ import {
   IconUser,
 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
-import { type Session } from "next-auth";
 
-type Props = {
-  session: Session | null;
-};
-
-const Header = ({ session }: Props) => {
+const Header = () => {
   const router = useRouter();
+  const session = useSession();
   return (
     <Flex justify="space-between" align="center" mah="60px" px="sm" flex="1">
       <Flex>
@@ -66,7 +62,7 @@ const Header = ({ session }: Props) => {
         </Flex>
       </Flex>
       <Flex align="center" justify="flex-end" gap="sm" flex="1">
-        {session?.user?.id && (
+        {session.data?.user?.id && (
           <Flex gap="sm" align="center">
             <CreateTake />
             <Box pos="relative">
