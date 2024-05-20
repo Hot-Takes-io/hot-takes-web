@@ -2,11 +2,6 @@ import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
-export enum TakeFetchTarget {
-  All = "all",
-  Following = "following",
-}
-
 export const commentRouter = createTRPCRouter({
   create: protectedProcedure
     .input(z.object({ takeId: z.number(), body: z.string() }))

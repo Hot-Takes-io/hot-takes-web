@@ -1,22 +1,25 @@
+"use client";
+
 import { Flex, ScrollAreaAutosize, Title } from "@mantine/core";
 import React from "react";
-import { api } from "~/trpc/server";
+
 import TakeCard from "./TakeCard";
 import { type Content } from "@tiptap/react";
-import { TakeFetchTarget } from "~/server/api/routers/take";
+import { TakeFetchTarget } from "~/app/_sharedTypes";
+import { api } from "~/trpc/react";
 
 type Props = {
   title: string;
   listType: TakeFetchTarget;
 };
-const TakeList = async ({ title, listType }: Props) => {
-  const takes = await api.take.get({ fetchTarget: listType });
+const TakeList = ({ title, listType }: Props) => {
+  const { data: takes } = api.take.get.useQuery({ fetchTarget: listType });
   return (
     <Flex flex="1" direction="column" miw="325px">
       <Title order={3} mx="auto">
         {title}
       </Title>
-      {takes.length > 0 ? (
+      {takes ? (
         <ScrollAreaAutosize mah={"calc(100vh - 120px)"}>
           {takes.map((take) => (
             <TakeCard

@@ -1,17 +1,13 @@
 import { TakeReactionType } from "@prisma/client";
 import { type Content } from "@tiptap/react";
 import { z } from "zod";
+import { TakeFetchTarget } from "~/app/_sharedTypes";
 
 import {
   createTRPCRouter,
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
-
-export enum TakeFetchTarget {
-  All = "all",
-  Following = "following",
-}
 
 export const takeRouter = createTRPCRouter({
   create: protectedProcedure
