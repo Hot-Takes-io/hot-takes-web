@@ -95,13 +95,13 @@ const Header = () => {
               transitionProps={{ transition: "slide-left", duration: 350 }}
             >
               <Menu.Target>
-                <Avatar className="pointer" src={session?.user.image} />
+                <Avatar className="pointer" src={session.data?.user.image} />
               </Menu.Target>
               <Menu.Dropdown>
                 <Anchor
                   component={Link}
                   td="none"
-                  href={`/user/${session?.user.handle}`}
+                  href={`/user/${session.data?.user.handle}`}
                 >
                   <Menu.Item leftSection={<IconUser />}>Profile</Menu.Item>
                 </Anchor>
