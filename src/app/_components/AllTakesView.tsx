@@ -4,7 +4,7 @@ import { Flex } from "@mantine/core";
 import React from "react";
 import TakeList from "./Takes/TakeList";
 
-// import UnauthenticatedLandingSection from "./UnauthenticatedLandingSection";
+import UnauthenticatedLandingSection from "./UnauthenticatedLandingSection";
 import { useSession } from "next-auth/react";
 import { TakeFetchTarget } from "../_sharedTypes";
 
@@ -23,8 +23,7 @@ const AllTakesView = () => {
             listType={TakeFetchTarget.Following}
           />
         ) : (
-          <></>
-          //   <UnauthenticatedLandingSection />
+          <UnauthenticatedLandingSection />
         )}
       </Flex>
     </Flex>

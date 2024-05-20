@@ -1,6 +1,12 @@
 "use client";
 
-import { Flex, ScrollAreaAutosize, Title } from "@mantine/core";
+import {
+  Flex,
+  Loader,
+  LoadingOverlay,
+  ScrollAreaAutosize,
+  Title,
+} from "@mantine/core";
 import React from "react";
 
 import TakeCard from "./TakeCard";
@@ -13,7 +19,18 @@ type Props = {
   listType: TakeFetchTarget;
 };
 const TakeList = ({ title, listType }: Props) => {
-  const { data: takes } = api.take.get.useQuery({ fetchTarget: listType });
+  const { data: takes, isLoading } = api.take.get.useQuery({
+    fetchTarget: listType,
+  });
+
+  if (isLoading) {
+    return (
+      <Flex flex="1" align="center" justify="center">
+        <Loader size="xl" type="bars" />
+      </Flex>
+    );
+  }
+
   return (
     <Flex flex="1" direction="column" miw="325px">
       <Title order={3} mx="auto">
