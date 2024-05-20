@@ -14,18 +14,26 @@ import NextImage from "next/image";
 import { api } from "~/trpc/react";
 
 import RichEditor from "../../_components/RichEditor/RichEditor";
-import { SessionProvider, useSession } from "next-auth/react";
+
 import { type Content } from "@tiptap/react";
 import ProfileBadge, {
   ProfileBadgeSize,
 } from "../../_components/ProfileBadge/ProfileBadge";
-import TakeCardWithSessionProvider from "~/app/_components/Takes/TakeCard";
-import { useState } from "react";
 
-const UserView = ({ params }: { params: { user: string } }) => {
+import { useState } from "react";
+import { type Session } from "next-auth";
+import TakeCard from "~/app/_components/Takes/TakeCard";
+
+const UserView = ({
+  params,
+  session,
+}: {
+  params: { user: string };
+  session: Session | null;
+}) => {
   const [isEditingBio, setIsEditingBio] = useState(false);
   const userHandle = params.user;
-  const session = useSession();
+
   const { data: userData } = api.user.getUser.useQuery(
     { handle: userHandle },
     { enabled: !!userHandle }
@@ -55,7 +63,7 @@ const UserView = ({ params }: { params: { user: string } }) => {
   const { mutate: updateUser } = api.user.updateUser.useMutation();
   const user = userData?.user;
   console.log("debug", userTakes);
-  const isAccountOwner = session.data?.user?.handle === userHandle;
+  const isAccountOwner = session?.user?.handle === userHandle;
   return (
     <>
       {!user ? (
@@ -135,7 +143,7 @@ const UserView = ({ params }: { params: { user: string } }) => {
               <Box flex="2">
                 <Title order={4}>Takes</Title>
                 {userTakes?.map((take) => (
-                  <TakeCardWithSessionProvider
+                  <TakeCard
                     key={take.id}
                     by={{
                       name: take.createdBy.name ?? "",
@@ -182,9 +190,4 @@ const UserView = ({ params }: { params: { user: string } }) => {
   );
 };
 
-const UserViewWithSession = ({ params }: { params: { user: string } }) => (
-  <SessionProvider>
-    <UserView params={params} />
-  </SessionProvider>
-);
-export default UserViewWithSession;
+export default UserView;

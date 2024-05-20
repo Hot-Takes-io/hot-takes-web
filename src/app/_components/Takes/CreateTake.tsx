@@ -1,7 +1,7 @@
 "use client";
 import { Box, Button, Flex, Modal, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { SessionProvider } from "next-auth/react";
+
 import React from "react";
 
 // Rich Text Editor
@@ -67,10 +67,4 @@ const CreateTake = () => {
   );
 };
 
-const WithSession = () => (
-  <SessionProvider>
-    <CreateTake />
-  </SessionProvider>
-);
-
-export default WithSession;
+export default CreateTake;

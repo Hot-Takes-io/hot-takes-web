@@ -1,6 +1,7 @@
 "use client";
 import { Button, type MantineSize } from "@mantine/core";
-import { SessionProvider, useSession } from "next-auth/react";
+
+import { useSession } from "next-auth/react";
 import React, { useEffect } from "react";
 import { api } from "~/trpc/react";
 
@@ -17,9 +18,8 @@ type Props = {
 
 const FollowUserButton = ({ size, userId }: Props) => {
   const [isFollowing, setIsFollowing] = React.useState(false);
-
   const session = useSession();
-  const isAuthenticated = session.status === "authenticated";
+  const isAuthenticated = !!session.data?.user?.id;
   const { data: followData, isLoading } = api.user.isFollowingUser.useQuery(
     {
       userId: userId ?? "",
@@ -56,7 +56,7 @@ const FollowUserButton = ({ size, userId }: Props) => {
     void utils.user.isFollowingUser.invalidate();
     void utils.user.getUserById.invalidate();
   };
-  if (session.data?.user.id === userId || !isAuthenticated) {
+  if (session.data?.user?.id === userId || !isAuthenticated) {
     return null;
   }
   return (
@@ -72,11 +72,4 @@ const FollowUserButton = ({ size, userId }: Props) => {
   );
 };
 
-const FollowUserButtonWithSessionProvider = (props: Props) => {
-  return (
-    <SessionProvider>
-      <FollowUserButton {...props} />
-    </SessionProvider>
-  );
-};
-export default FollowUserButtonWithSessionProvider;
+export default FollowUserButton;

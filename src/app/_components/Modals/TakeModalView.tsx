@@ -18,7 +18,6 @@ import { useForm } from "@mantine/form";
 
 import CommentCard from "../Comment/CommentCard";
 import { useRouter } from "next/navigation";
-import { SessionProvider } from "next-auth/react";
 
 type Props = ContextModalProps<{ takeId: number }>;
 
@@ -68,22 +67,21 @@ const TakeModalView = ({ innerProps }: Props) => {
 
   return (
     <Box>
-      <SessionProvider>
-        <TakeCard
-          isTakeLoading={isTakeLoading}
-          content={take?.content as Content}
-          takeId={innerProps.takeId}
-          createdAt={take?.createdAt ?? new Date()}
-          commentsCount={take?._count.comments ?? 0}
-          by={{
-            name: take?.createdBy.name ?? "",
-            handle: take?.createdBy.handle ?? "",
-            image: take?.createdBy.image ?? "",
-            id: take?.createdBy.id ?? "",
-          }}
-          noCommentLink
-        />
-      </SessionProvider>
+      <TakeCard
+        isTakeLoading={isTakeLoading}
+        content={take?.content as Content}
+        takeId={innerProps.takeId}
+        createdAt={take?.createdAt ?? new Date()}
+        commentsCount={take?._count.comments ?? 0}
+        by={{
+          name: take?.createdBy.name ?? "",
+          handle: take?.createdBy.handle ?? "",
+          image: take?.createdBy.image ?? "",
+          id: take?.createdBy.id ?? "",
+        }}
+        noCommentLink
+      />
+
       <ScrollAreaAutosize mah="35vh">
         {comments?.map((comment) => (
           <CommentCard key={comment.id} comment={comment} />

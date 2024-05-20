@@ -9,7 +9,7 @@ import {
   ThemeIcon,
   Title,
 } from "@mantine/core";
-import { SessionProvider, signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import React from "react";
 import CreateTake from "../Takes/CreateTake";
 import PoweredBy from "./PoweredBy";
@@ -22,9 +22,13 @@ import {
   IconUser,
 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
+import { type Session } from "next-auth";
 
-const Header = () => {
-  const session = useSession();
+type Props = {
+  session: Session | null;
+};
+
+const Header = ({ session }: Props) => {
   const router = useRouter();
   return (
     <Flex justify="space-between" align="center" mah="60px" px="sm" flex="1">
@@ -62,7 +66,7 @@ const Header = () => {
         </Flex>
       </Flex>
       <Flex align="center" justify="flex-end" gap="sm" flex="1">
-        {session.data?.user.id && (
+        {session?.user?.id && (
           <Flex gap="sm" align="center">
             <CreateTake />
             <Box pos="relative">
@@ -95,13 +99,13 @@ const Header = () => {
               transitionProps={{ transition: "slide-left", duration: 350 }}
             >
               <Menu.Target>
-                <Avatar className="pointer" src={session.data?.user.image} />
+                <Avatar className="pointer" src={session?.user.image} />
               </Menu.Target>
               <Menu.Dropdown>
                 <Anchor
                   component={Link}
                   td="none"
-                  href={`/user/${session.data?.user.handle}`}
+                  href={`/user/${session?.user.handle}`}
                 >
                   <Menu.Item leftSection={<IconUser />}>Profile</Menu.Item>
                 </Anchor>
@@ -124,10 +128,4 @@ const Header = () => {
   );
 };
 
-const WithSessionProvider = () => (
-  <SessionProvider>
-    <Header />
-  </SessionProvider>
-);
-
-export default WithSessionProvider;
+export default Header;

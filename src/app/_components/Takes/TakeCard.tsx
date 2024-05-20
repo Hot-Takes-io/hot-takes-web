@@ -22,8 +22,10 @@ import { TakeReactionType } from "@prisma/client";
 import RichEditor from "../RichEditor/RichEditor";
 import { modals } from "@mantine/modals";
 import { ModalNames } from "../Modals";
-import { SessionProvider, useSession } from "next-auth/react";
+
 import CardUserHeader from "../CardUserHeader";
+
+import { useSession } from "next-auth/react";
 
 type Props = {
   content: Content;
@@ -215,29 +217,4 @@ const TakeCard = ({
   );
 };
 
-const TakeCardWithSessionProvider = (props: Props) => {
-  const {
-    by,
-    content,
-    createdAt,
-    commentsCount,
-    takeId,
-    noCommentLink,
-    isTakeLoading,
-  } = props;
-  return (
-    <SessionProvider>
-      <TakeCard
-        by={by}
-        content={content}
-        createdAt={createdAt}
-        commentsCount={commentsCount}
-        takeId={takeId}
-        noCommentLink={noCommentLink}
-        isTakeLoading={isTakeLoading}
-      />
-    </SessionProvider>
-  );
-};
-
-export default TakeCardWithSessionProvider;
+export default TakeCard;

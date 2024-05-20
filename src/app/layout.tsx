@@ -8,6 +8,8 @@ import { Analytics } from "@vercel/analytics/react";
 
 import App from "./_components/App";
 import Header from "./_components/Header/Header";
+import { getServerAuthSession } from "~/server/auth";
+import React from "react";
 
 const roboto = Roboto_Mono({
   subsets: ["latin"],
@@ -45,11 +47,24 @@ declare global {
   }
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getServerAuthSession();
+
+  const renderChildren = () => {
+    return React.Children.map(children, (child) => {
+      if (child) {
+        return React.cloneElement(child as React.ReactElement, {
+          session,
+        });
+      }
+      return null;
+    });
+  };
+
   return (
     <html lang="en" data-mantine-color-scheme="dark">
       <head>
@@ -60,8 +75,8 @@ export default function RootLayout({
           <Analytics />
           <MantineProvider forceColorScheme="dark">
             <Flex flex="1" direction="column">
-              <Header />
-              <App>{children}</App>
+              <Header session={session} />
+              <App>{renderChildren()}</App>
             </Flex>
           </MantineProvider>
         </TRPCReactProvider>
