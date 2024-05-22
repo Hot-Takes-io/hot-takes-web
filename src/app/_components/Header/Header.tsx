@@ -1,5 +1,5 @@
 "use client";
-import { Anchor, Avatar, Badge, Flex, Menu, Title } from "@mantine/core";
+import { Anchor, Avatar, Badge, Flex, Menu, Title, Text } from "@mantine/core";
 import { signOut, useSession } from "next-auth/react";
 import CreateTake from "../Takes/CreateTake";
 import Link from "next/link";
@@ -34,22 +34,17 @@ const Header = () => {
         >
           Alpha 0.0.1
         </Badge>
-        <Flex gap="sm" align="center">
-          <Anchor
-            td="none"
-            href="https://discord.gg/CeJY9YSFGj"
-            target="_blank"
-          >
-            <Flex gap="sm" align="center" flex="1" pl="sm">
-              <Title className="hide-on-mobile" order={4}>
-                Contact
-              </Title>
-              <IconBrandDiscordFilled size={24} />
-            </Flex>
-          </Anchor>
-        </Flex>
       </Flex>
+
       <Flex align="center" justify="flex-end" gap="sm" flex="1">
+        <Anchor td="none" href="https://discord.gg/CeJY9YSFGj" target="_blank">
+          <Flex align="center" direction="column">
+            <IconBrandDiscordFilled size={24} />
+            <Text className="hide-on-mobile" size="xs">
+              Contact Us
+            </Text>
+          </Flex>
+        </Anchor>
         {session.data?.user?.id && (
           <Flex gap="sm" align="center">
             <CreateTake />
