@@ -5,7 +5,7 @@ import Image from "next/image";
 import React from "react";
 import TypeScriptLogo from "src/app/_assets/images/svg/ts-logo-128.svg";
 
-const powerdBy = [
+const poweredBy = [
   {
     name: "GitHub",
     link: "https://github.com",
@@ -63,7 +63,7 @@ const PoweredBy = () => {
     <Box mt="xl" p="sm">
       <Title order={6}>Powered by:</Title>
       <Flex gap="xs" wrap="wrap" p="sm">
-        {powerdBy.map((sponsor) => (
+        {poweredBy.map((sponsor) => (
           <TooltipFloating
             key={sponsor.name}
             label={sponsor.name}

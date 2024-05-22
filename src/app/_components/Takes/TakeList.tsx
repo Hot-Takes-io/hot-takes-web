@@ -28,7 +28,7 @@ const TakeList = ({ title, listType }: Props) => {
 
   return (
     <Flex flex="1" direction="column" miw="325px">
-      <Title order={3} mx="auto">
+      <Title order={3} mx="auto" my="xs">
         {title}
       </Title>
       {takes ? (
