@@ -20,7 +20,7 @@ const TakeList = ({ title, listType }: Props) => {
   const session = useSession();
   if (isLoading) {
     return (
-      <Flex flex="1" align="center" justify="center" mih="calc(100vh - 120px)">
+      <Flex flex="1" align="center" justify="center" mih="calc(100vh - 128px)">
         <Loader size="xl" type="bars" />
       </Flex>
     );
@@ -32,7 +32,7 @@ const TakeList = ({ title, listType }: Props) => {
         {title}
       </Title>
       {takes ? (
-        <ScrollAreaAutosize mah={"calc(100vh - 120px)"}>
+        <ScrollAreaAutosize mah={"calc(100vh - 152px)"}>
           {!session.data?.user && <UnauthenticatedLandingSection />}
           {takes.map((take) => (
             <TakeCard

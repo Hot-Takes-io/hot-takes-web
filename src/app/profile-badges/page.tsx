@@ -7,7 +7,7 @@ import ProfileBadge, {
 const ProfileBadgesView = async () => {
   const profileBadges = await db.userBadge.findMany();
   return (
-    <ScrollAreaAutosize component={Flex} flex="1" mah="calc(100vh - 63px)">
+    <ScrollAreaAutosize component={Flex} flex="1" mah="calc(100vh - 64px)">
       <Flex wrap="wrap">
         {profileBadges.map((profileBadge) => (
           <Flex

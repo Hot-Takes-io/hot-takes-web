@@ -16,7 +16,7 @@ const Header = () => {
   const router = useRouter();
   const session = useSession();
   return (
-    <Flex justify="space-between" align="center" mah="60px" px="sm" flex="1">
+    <Flex justify="space-between" align="center" h="64px" px="sm">
       <Flex>
         <Anchor component={Link} href="/" td="none" c="gray">
           <Flex align="center">
