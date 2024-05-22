@@ -1,6 +1,6 @@
 "use client";
 
-import { Anchor, Avatar, Box, Flex, Title } from "@mantine/core";
+import { Anchor, Avatar, Box, Flex, Title, Text } from "@mantine/core";
 import { formatDistanceToNow } from "date-fns";
 import Link from "next/link";
 import React from "react";
@@ -26,16 +26,16 @@ const CardUserHeader = ({ createdAt, userId }: Props) => {
       </Anchor>
       <Flex wrap="wrap" gap="sm">
         <Box>
-          <Title order={4}>{name}</Title>
-          <Title order={5}>@{handle}</Title>
+          <Title order={5}>{name}</Title>
+          <Text size="xs">@{handle}</Text>
         </Box>
-        <Box>
-          <Title order={5}>
+        <Flex wrap={"wrap"} justify="flex-end" direction="column">
+          <Text size="xs">
             {user?._count.followers} follower
             {user?._count.followers === 1 ? "" : "s"}
-          </Title>
-          <Title order={5}>· {formatDistanceToNow(createdAt)} ago</Title>
-        </Box>
+          </Text>
+          <Text size="xs">{formatDistanceToNow(createdAt)} ago</Text>
+        </Flex>
         <FollowUserButton userId={userId} size="xs" />
       </Flex>
     </Flex>
