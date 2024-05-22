@@ -1,4 +1,4 @@
-import { Anchor, Flex, TooltipFloating } from "@mantine/core";
+import { Anchor, Box, Flex, Title, TooltipFloating } from "@mantine/core";
 
 import { type StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
@@ -60,22 +60,28 @@ const powerdBy = [
 
 const PoweredBy = () => {
   return (
-    <Flex flex="1" align="center" gap="xs" className="hide-on-mobile">
-      &nbsp;Powered by:
-      {powerdBy.map((sponsor) => (
-        <TooltipFloating key={sponsor.name} label={sponsor.name} color="black">
-          <Anchor href={sponsor.link} target="_blank" rel="noreferrer">
-            <Image
-              src={sponsor.logo}
-              alt={sponsor.name}
-              width={36}
-              height={36}
-            />
-          </Anchor>
-        </TooltipFloating>
-      ))}
+    <Box mt="xl" p="sm">
+      <Title order={6}>Powered by:</Title>
+      <Flex gap="xs" wrap="wrap" p="sm">
+        {powerdBy.map((sponsor) => (
+          <TooltipFloating
+            key={sponsor.name}
+            label={sponsor.name}
+            color="black"
+          >
+            <Anchor href={sponsor.link} target="_blank" rel="noreferrer">
+              <Image
+                src={sponsor.logo}
+                alt={sponsor.name}
+                width={36}
+                height={36}
+              />
+            </Anchor>
+          </TooltipFloating>
+        ))}
+      </Flex>
       and sponsored by: none 😢 (yet!)
-    </Flex>
+    </Box>
   );
 };
 

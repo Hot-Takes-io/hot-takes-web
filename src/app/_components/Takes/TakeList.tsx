@@ -6,6 +6,8 @@ import TakeCard from "./TakeCard";
 import { type Content } from "@tiptap/react";
 import { TakeFetchTarget } from "~/app/_sharedTypes";
 import { api } from "~/trpc/react";
+import UnauthenticatedLandingSection from "../UnauthenticatedLandingSection";
+import { useSession } from "next-auth/react";
 
 type Props = {
   title: string;
@@ -15,10 +17,10 @@ const TakeList = ({ title, listType }: Props) => {
   const { data: takes, isLoading } = api.take.get.useQuery({
     fetchTarget: listType,
   });
-
+  const session = useSession();
   if (isLoading) {
     return (
-      <Flex flex="1" align="center" justify="center">
+      <Flex flex="1" align="center" justify="center" mih="calc(100vh - 120px)">
         <Loader size="xl" type="bars" />
       </Flex>
     );
@@ -31,6 +33,7 @@ const TakeList = ({ title, listType }: Props) => {
       </Title>
       {takes ? (
         <ScrollAreaAutosize mah={"calc(100vh - 120px)"}>
+          {!session.data?.user && <UnauthenticatedLandingSection />}
           {takes.map((take) => (
             <TakeCard
               key={take.id}

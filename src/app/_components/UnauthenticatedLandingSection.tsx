@@ -1,6 +1,6 @@
 "use client";
 import { Card, Text, CardSection, Flex, Badge, Box } from "@mantine/core";
-import { IconArrowBigLeftLines } from "@tabler/icons-react";
+import { IconArrowBigDownLines } from "@tabler/icons-react";
 
 import React from "react";
 import SignInButton from "./SignInButton";
@@ -77,7 +77,7 @@ const UnauthenticatedLandingSection = () => {
               </Text>
             </Flex>
             <Flex align="center" gap="sm">
-              <IconArrowBigLeftLines size="80" />
+              <IconArrowBigDownLines size="80" />
               <Text>
                 Take these nerds for example, they dared to express themselves
                 and we bet you are dying to go let them have a piece of your

@@ -2,7 +2,6 @@
 import { Anchor, Avatar, Badge, Flex, Menu, Title } from "@mantine/core";
 import { signOut, useSession } from "next-auth/react";
 import CreateTake from "../Takes/CreateTake";
-import PoweredBy from "./PoweredBy";
 import Link from "next/link";
 import {
   IconBrandDiscordFilled,
@@ -35,7 +34,6 @@ const Header = () => {
         >
           Alpha 0.0.1
         </Badge>
-        <PoweredBy />
         <Flex gap="sm" align="center">
           <Anchor
             td="none"
