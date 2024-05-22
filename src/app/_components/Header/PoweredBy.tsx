@@ -1,4 +1,4 @@
-import { Anchor, Box, Flex, Title, TooltipFloating } from "@mantine/core";
+import { Anchor, Box, Flex, Title, TooltipFloating, Text } from "@mantine/core";
 
 import { type StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
@@ -80,7 +80,10 @@ const PoweredBy = () => {
           </TooltipFloating>
         ))}
       </Flex>
-      and sponsored by: none 😢 (yet!)
+      <Box>
+        <Title order={6}>Sponsored by:</Title>
+        <Text p="sm">no one 😢 (yet!)</Text>
+      </Box>
     </Box>
   );
 };
