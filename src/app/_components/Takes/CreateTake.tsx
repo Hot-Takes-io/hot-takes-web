@@ -45,7 +45,7 @@ const CreateTake = () => {
   };
   return (
     <Box>
-      <Button size="md" fz="xs" variant="subtle" onClick={open}>
+      <Button size="xs" fz="xs" variant="subtle" onClick={open}>
         I have an opinion
       </Button>
       <Modal

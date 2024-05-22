@@ -38,10 +38,10 @@ const Header = () => {
 
       <Flex align="center" justify="flex-end" gap="sm" flex="1">
         <Anchor td="none" href="https://discord.gg/CeJY9YSFGj" target="_blank">
-          <Flex align="center" direction="column">
+          <Flex align="center" direction="column" justify="center" ml="xs">
             <IconBrandDiscordFilled size={24} />
-            <Text className="hide-on-mobile" size="xs">
-              Contact Us
+            <Text size="xs" ta="center">
+              Contact
             </Text>
           </Flex>
         </Anchor>
