@@ -37,6 +37,7 @@ const Admin = async () => {
               <TableTh></TableTh>
               <TableTh>Handle</TableTh>
               <TableTh>Name</TableTh>
+              <TableTh>Email</TableTh>
               <TableTh>Followers</TableTh>
               <TableTh>Following</TableTh>
               <TableTh>Takes</TableTh>
@@ -54,6 +55,7 @@ const Admin = async () => {
                 </TableTh>
                 <TableTh>{user.handle}</TableTh>
                 <TableTh>{user.name}</TableTh>
+                <TableTh>{user.email}</TableTh>
                 <TableTh>{user._count.followers}</TableTh>
                 <TableTh>{user._count.following}</TableTh>
                 <TableTh>{user._count.takes}</TableTh>

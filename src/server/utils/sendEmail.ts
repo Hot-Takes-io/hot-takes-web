@@ -1,5 +1,6 @@
 import sgMail, { type MailDataRequired } from "@sendgrid/mail";
 import { env } from "~/env";
+import Logger from "./logger";
 
 sgMail.setApiKey(env.SENDGRID_API_KEY);
 
@@ -8,11 +9,16 @@ export enum EmailSender {
   SUPPORT = "support@hot-takes.io",
   CONTACT = "contact@hot-takes.io",
   MARKETING = "marketing@hot-takes.io",
-  NOTIFICATIONS = "notifications@hot-takes.io",
+  NOTIFICATIONS = "Hot-Takes.io Notifications <notifications@hot-takes.io>",
 }
 
 export enum EmailTemplate {
-  GENERAL = "ac069b8e4da74b879e5dcc98812f6412",
+  GENERAL = "d-ac069b8e4da74b879e5dcc98812f6412",
+}
+
+export enum EmailGroupID {
+  NEW_COMMENT = 25578,
+  MENTION = 25579,
 }
 
 interface EmailDynamicData {
@@ -31,25 +37,30 @@ const sendEmail = async ({
   recipient,
   template,
   data,
+  emailGroupId,
 }: {
   sender: EmailSender;
   recipient: string;
   template: EmailTemplate;
   data: EmailDynamicData;
+  emailGroupId: EmailGroupID;
 }) => {
   const msg: MailDataRequired = {
     from: sender,
     to: recipient,
     templateId: template,
+    asm: {
+      groupId: emailGroupId,
+      groupsToDisplay: [EmailGroupID.MENTION, EmailGroupID.NEW_COMMENT],
+    },
     dynamicTemplateData: {
       ...data,
     },
   };
-  try {
-    await sgMail.send(msg);
-  } catch (error) {
-    console.error(error);
-  }
+
+  await sgMail.send(msg).catch((error: { response: { body: unknown } }) => {
+    Logger(error.response.body as string);
+  });
 };
 
 export default sendEmail;
