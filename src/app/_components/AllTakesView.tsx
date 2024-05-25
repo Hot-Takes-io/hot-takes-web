@@ -6,10 +6,27 @@ import TakeList from "./Takes/TakeList";
 import { useSession } from "next-auth/react";
 import { TakeFetchTarget } from "../_sharedTypes";
 import PoweredBy from "./Header/PoweredBy";
+import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
+import { modals } from "@mantine/modals";
+import { ModalNames } from "./Modals";
 
 const AllTakesView = () => {
   const session = useSession();
+  const searchParams = useSearchParams();
+  const takeId = searchParams.get("takeId");
 
+  useEffect(() => {
+    if (takeId) {
+      modals.openContextModal({
+        modal: ModalNames.TakeModalView,
+        innerProps: {
+          takeId: parseInt(takeId),
+        },
+        size: "xl",
+      });
+    }
+  }, [takeId]);
   enum TabValues {
     All = "all",
     Following = "following",
