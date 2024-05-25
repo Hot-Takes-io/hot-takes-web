@@ -3,6 +3,8 @@ import {
   type Prisma,
   UserNotificationType,
 } from "@prisma/client";
+import sendEmail, { EmailSender, EmailTemplate } from "../utils/sendEmail";
+import { env } from "~/env";
 
 export const onCommentChange = async (
   params: Prisma.MiddlewareParams,
@@ -19,6 +21,7 @@ export const onCommentChange = async (
         where: {
           id: takeId,
         },
+        include: { createdBy: true },
       });
       if (take?.createdById && take?.createdById !== commentByUserId) {
         await prisma.userNotification.create({
@@ -29,6 +32,23 @@ export const onCommentChange = async (
             commentBody: data.body,
           },
         });
+        if (take.createdBy.email) {
+          await sendEmail({
+            sender: EmailSender.NOTIFICATIONS,
+            recipient: take.createdBy.email,
+            template: EmailTemplate.GENERAL,
+            data: {
+              Email_Subject: "New Comment on Your Take",
+              Email_Preheader: "Someone commented on your take",
+              Email_Title: "New Comment on Your Take",
+              Email_Salutation: `Hey ${take.createdBy.name}`,
+              Button_Body: "View Take",
+              Email_Body: `Someone commented on your take. Click the button below to view the comment.`,
+              Button_URL: `${env.CLIENT_URL}?takeId=${takeId}`,
+              Email_Signature: "The Hot Takes Team",
+            },
+          });
+        }
       }
     }
   }
