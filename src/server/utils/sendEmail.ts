@@ -1,10 +1,10 @@
 import sgMail, { type MailDataRequired } from "@sendgrid/mail";
 import { env } from "~/env";
-import Logger from "./logger";
 
 sgMail.setApiKey(env.SENDGRID_API_KEY);
 
 export enum EmailSender {
+  AUTHENTICATION = "authentication@hot-takes.io",
   NO_REPLY = "no-reply@hot-takes.io",
   SUPPORT = "support@hot-takes.io",
   CONTACT = "contact@hot-takes.io",
@@ -19,6 +19,7 @@ export enum EmailTemplate {
 export enum EmailGroupID {
   NEW_COMMENT = 25578,
   MENTION = 25579,
+  NONE = 0,
 }
 
 interface EmailDynamicData {
@@ -58,8 +59,12 @@ const sendEmail = async ({
     },
   };
 
+  if (emailGroupId === EmailGroupID.NONE) {
+    delete msg.asm;
+  }
+
   await sgMail.send(msg).catch((error: { response: { body: unknown } }) => {
-    Logger(error.response.body as string);
+    console.error(error.response.body as string);
   });
 };
 

@@ -1,17 +1,24 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 
 import {
-  type Profile,
+  // type Profile,
   getServerSession,
   type DefaultSession,
   type NextAuthOptions,
 } from "next-auth";
 import { type Adapter } from "next-auth/adapters";
 
-import GitHubProvider from "next-auth/providers/github";
+import EmailProvider from "next-auth/providers/email";
+// import GitHubProvider from "next-auth/providers/github";
 
-import { env } from "~/env";
 import { db } from "~/server/db";
+import sendEmail, {
+  EmailGroupID,
+  EmailSender,
+  EmailTemplate,
+} from "./utils/sendEmail";
+import { secondsToHours } from "date-fns";
+// import { env } from "~/env";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -36,10 +43,10 @@ declare module "next-auth" {
   }
 }
 
-interface ExtendedProfile extends Profile {
-  login: string;
-  bio: string;
-}
+// interface ExtendedProfile extends Profile {
+//   login: string;
+//   bio: string;
+// }
 
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
@@ -56,40 +63,40 @@ export const authOptions: NextAuthOptions = {
         handle: user.handle,
       },
     }),
-    signIn: async ({ user, account, profile }) => {
+    signIn: async ({ user }) => {
       if (!user.email) {
         return false;
       }
-      if (account?.provider === "github") {
-        const githubProfile = profile as ExtendedProfile;
-        const dbUser = await db.user.findFirst({
-          where: { email: user.email },
-        });
+      // if (account?.provider === "github") {
+      //   const githubProfile = profile as ExtendedProfile;
+      //   const dbUser = await db.user.findFirst({
+      //     where: { email: user.email },
+      //   });
 
-        if (!dbUser) {
-          await db.user.create({
-            data: {
-              email: user.email,
-              name: user.name,
-              image: user.image,
-              githubLogin: githubProfile.login,
-              handle: githubProfile.login,
-              bio: {
-                type: "doc",
-                content: [
-                  {
-                    type: "paragraph",
-                    attrs: { textAlign: "left" },
-                    content: [
-                      { text: `${githubProfile.bio ?? ""}`, type: "text" },
-                    ],
-                  },
-                ],
-              },
-            },
-          });
-        }
-      }
+      //   if (!dbUser) {
+      //     await db.user.create({
+      //       data: {
+      //         email: user.email,
+      //         name: user.name,
+      //         image: user.image,
+      //         githubLogin: githubProfile.login,
+      //         handle: githubProfile.login,
+      //         bio: {
+      //           type: "doc",
+      //           content: [
+      //             {
+      //               type: "paragraph",
+      //               attrs: { textAlign: "left" },
+      //               content: [
+      //                 { text: `${githubProfile.bio ?? ""}`, type: "text" },
+      //               ],
+      //             },
+      //           ],
+      //         },
+      //       },
+      //     });
+      //   }
+      // }
       const invitation = await db.userInvitation.findUnique({
         where: { email: user.email },
       });
@@ -107,11 +114,33 @@ export const authOptions: NextAuthOptions = {
   },
   adapter: PrismaAdapter(db) as Adapter,
   providers: [
-    GitHubProvider({
-      clientId: env.GITHUB_ID,
-      clientSecret: env.GITHUB_SECRET,
-      allowDangerousEmailAccountLinking: true,
+    EmailProvider({
+      sendVerificationRequest: async (params) => {
+        await sendEmail({
+          sender: EmailSender.AUTHENTICATION,
+          recipient: params.identifier,
+          template: EmailTemplate.GENERAL,
+          data: {
+            Email_Subject: "Your Hot-Takes.io Login Email",
+            Email_Preheader: "Login to Hot-Takes.io",
+            Email_Title: "Login to Hot-Takes.io",
+            Email_Body: `Click the button below to login to Hot-Takes.io. If you didn't request this email, you can safely ignore it. This link is valid for ${secondsToHours(
+              params.provider.maxAge
+            )} hours (${new Date(params.expires).toUTCString()}).
+            `,
+            Button_Body: "Login",
+            Button_URL: params.url,
+            Email_Signature: `The Hot Takes Team`,
+          },
+          emailGroupId: EmailGroupID.NONE,
+        });
+      },
     }),
+    // GitHubProvider({
+    //   clientId: env.GITHUB_ID,
+    //   clientSecret: env.GITHUB_SECRET,
+    //   allowDangerousEmailAccountLinking: true,
+    // }),
     /**
      * ...add more providers here.
      *

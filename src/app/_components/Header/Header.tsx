@@ -1,20 +1,140 @@
 "use client";
-import { Anchor, Avatar, Badge, Flex, Menu, Title, Text } from "@mantine/core";
+import {
+  Anchor,
+  Avatar,
+  Badge,
+  Flex,
+  Menu,
+  Title,
+  Text,
+  Modal,
+  TextInput,
+  Button,
+} from "@mantine/core";
 import { signOut, useSession } from "next-auth/react";
 import CreateTake from "../Takes/CreateTake";
 import Link from "next/link";
 import {
   IconBrandDiscordFilled,
+  IconCheck,
   IconLogout,
   IconSettings,
   IconUser,
 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import NotificationsButton from "../NotificationsButton";
+import { useDebouncedCallback, useDisclosure } from "@mantine/hooks";
+import { useEffect, useMemo, useState } from "react";
+
+import { useForm } from "@mantine/form";
+import { z } from "zod";
+import { api } from "~/trpc/react";
+import { notifications } from "@mantine/notifications";
 
 const Header = () => {
   const router = useRouter();
   const session = useSession();
+  const [opened, { open, close }] = useDisclosure(false);
+  const emailSchema = z.string().email();
+  const nameSchema = z.string().min(2).max(30);
+  const handleSchema = z.string().min(4).max(20);
+  const utils = api.useUtils();
+  const [isTaken, setIsTaken] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { data: userData, isLoading: isUserLoading } =
+    api.user.getCurrentUser.useQuery(undefined, {
+      enabled: !!session.data?.user?.id,
+    });
+
+  const { mutate: updateUser } = api.user.updateUser.useMutation({
+    onSuccess: () => {
+      notifications.show({
+        title: "Success",
+        icon: <IconCheck />,
+        color: "green",
+        message: "User Settings updated",
+      });
+    },
+    onSettled: () => {
+      void utils.user.getCurrentUser.invalidate();
+    },
+  });
+
+  const form = useForm({
+    mode: "uncontrolled",
+    initialValues: {
+      image: userData?.image ?? "",
+      name: userData?.name ?? "",
+      handle: userData?.handle ?? "",
+      email: userData?.email ?? "",
+    },
+    validate: {
+      email: (value) => {
+        const result = emailSchema.safeParse(value).success
+          ? null
+          : "Invalid email address";
+        return result;
+      },
+      name: (value) => {
+        const result = nameSchema.safeParse(value).success
+          ? null
+          : "Name must be between 2 and 30 characters";
+        return result;
+      },
+      handle: (value) => {
+        if (
+          userData?.handle &&
+          value.toLowerCase() === userData.handle.toLowerCase()
+        ) {
+          return null;
+        }
+        const isLengthOk = handleSchema.safeParse(value).success;
+        if (!isLengthOk) {
+          return "Handle must be between 4 and 20 characters";
+        }
+        if (isTaken) {
+          return "Handle is already taken";
+        }
+        return null;
+      },
+    },
+  });
+
+  useEffect(() => {
+    if (userData?.id && userData && !form.isDirty()) {
+      form.setValues({
+        image: userData.image ?? "",
+        name: userData.name ?? "",
+        handle: userData.handle ?? "",
+        email: userData.email ?? "",
+      });
+    }
+  }, [form, userData?.id, userData]);
+
+  const forceSettings = useMemo(() => {
+    const { name, handle, email } = userData ?? {};
+    if (!name) {
+      return true;
+    }
+    if (!handle) {
+      return true;
+    }
+    if (!email) {
+      return true;
+    }
+    return false;
+  }, [userData]);
+
+  const checkHandle = useDebouncedCallback(async (handle: string) => {
+    const { isTaken } = await utils.user.isHandleTaken.fetch({
+      handle,
+    });
+    setIsTaken(isTaken);
+    setIsLoading(false);
+    form.validateField("handle");
+  }, 500);
+
   return (
     <Flex justify="space-between" align="center" h="64px" px="sm">
       <Flex>
@@ -45,7 +165,7 @@ const Header = () => {
             </Text>
           </Flex>
         </Anchor>
-        {session.data?.user?.id && (
+        {userData?.id && (
           <Flex gap="sm" align="center">
             <CreateTake />
             <NotificationsButton />
@@ -55,17 +175,24 @@ const Header = () => {
               transitionProps={{ transition: "slide-left", duration: 350 }}
             >
               <Menu.Target>
-                <Avatar className="pointer" src={session.data?.user.image} />
+                <Avatar className="pointer" src={userData.image} />
               </Menu.Target>
               <Menu.Dropdown>
                 <Anchor
                   component={Link}
                   td="none"
-                  href={`/user/${session.data?.user.handle}`}
+                  href={`/user/${userData.handle}`}
                 >
                   <Menu.Item leftSection={<IconUser />}>Profile</Menu.Item>
                 </Anchor>
-                <Menu.Item leftSection={<IconSettings />}>Settings</Menu.Item>
+                <Menu.Item
+                  leftSection={<IconSettings />}
+                  onClick={() => {
+                    open();
+                  }}
+                >
+                  Settings
+                </Menu.Item>
                 <Menu.Item
                   leftSection={<IconLogout />}
                   onClick={async () => {
@@ -77,6 +204,66 @@ const Header = () => {
                 </Menu.Item>
               </Menu.Dropdown>
             </Menu>
+            <Modal
+              opened={opened || forceSettings}
+              onClose={close}
+              withCloseButton={!forceSettings}
+            >
+              <Flex justify="center">
+                <Title order={3}>User Settings</Title>
+              </Flex>
+              <form
+                onSubmit={form.onSubmit((values) => {
+                  if (isTaken) {
+                    form.validate();
+                  } else {
+                    updateUser(values);
+                  }
+                })}
+              >
+                <Flex direction="column" gap="md">
+                  <TextInput
+                    label="Profile image"
+                    placeholder="https://example.com/image.jpg"
+                    {...form.getInputProps("image")}
+                  />
+                  <TextInput
+                    label="Name"
+                    placeholder="Your name"
+                    withAsterisk
+                    {...form.getInputProps("name")}
+                  />
+                  <TextInput
+                    label="Handle"
+                    placeholder="yourhandle"
+                    withAsterisk
+                    {...form.getInputProps("handle")}
+                    onChange={async (e) => {
+                      form.setFieldValue("handle", e.target.value);
+                      setIsLoading(true);
+                      checkHandle(e.target.value);
+                    }}
+                  />
+                  <TextInput
+                    label="Email"
+                    placeholder="Your email"
+                    withAsterisk
+                    {...form.getInputProps("email")}
+                    disabled
+                  />
+                </Flex>
+                <Flex justify="flex-end">
+                  <Button
+                    mt="lg"
+                    type="submit"
+                    variant="gradient"
+                    loading={isUserLoading || isLoading}
+                  >
+                    Save
+                  </Button>
+                </Flex>
+              </form>
+            </Modal>
           </Flex>
         )}
       </Flex>

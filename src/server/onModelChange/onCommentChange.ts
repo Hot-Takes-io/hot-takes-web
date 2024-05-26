@@ -9,14 +9,13 @@ import sendEmail, {
   EmailTemplate,
 } from "../utils/sendEmail";
 import { env } from "~/env";
-import Logger from "../utils/logger";
+
 import truncate from "lodash/truncate";
 
 export const onCommentChange = async (
   params: Prisma.MiddlewareParams,
   prisma: PrismaClient
 ) => {
-  Logger("DEBUG: onCommentChange START");
   if (params.action === "create") {
     const args = params.args as { data: Prisma.CommentCreateInput };
     const data = args.data;

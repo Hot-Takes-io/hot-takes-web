@@ -1,8 +1,10 @@
 import "~/styles/globals.css";
 import { Roboto_Mono } from "next/font/google";
 import { TRPCReactProvider } from "~/trpc/react";
+import { Notifications } from "@mantine/notifications";
 import "@mantine/core/styles.css";
 import "@mantine/tiptap/styles.css";
+import "@mantine/notifications/styles.css";
 import { ColorSchemeScript, MantineProvider, Flex } from "@mantine/core";
 import { Analytics } from "@vercel/analytics/react";
 
@@ -74,6 +76,7 @@ export default async function RootLayout({
         <TRPCReactProvider>
           <Analytics />
           <MantineProvider forceColorScheme="dark">
+            <Notifications />
             <Flex flex="1" direction="column">
               <App>{renderChildren()}</App>
             </Flex>

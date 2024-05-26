@@ -76,6 +76,7 @@ export const userRouter = createTRPCRouter({
         name: z.string().optional(),
         email: z.string().email().optional(),
         bio: z.custom<Content | undefined>().optional(),
+        image: z.string().url().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -84,6 +85,7 @@ export const userRouter = createTRPCRouter({
         | { name: string }
         | { email: string }
         | { bio: JSON }
+        | { image: string }
         | object = { ...input };
 
       const user = await ctx.db.user.update({
@@ -163,4 +165,18 @@ export const userRouter = createTRPCRouter({
         include: { user: true },
       });
     }),
+  isHandleTaken: protectedProcedure
+    .input(z.object({ handle: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const user = await ctx.db.user.findFirst({
+        where: { handle: { equals: input.handle, mode: "insensitive" } },
+      });
+      return { isTaken: !!user };
+    }),
+  getCurrentUser: protectedProcedure.query(async ({ ctx }) => {
+    return ctx.db.user.findUnique({
+      where: { id: ctx.session.user.id },
+      include: { userBadges: true },
+    });
+  }),
 });
