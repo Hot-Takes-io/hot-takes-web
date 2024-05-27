@@ -276,22 +276,24 @@ const Header = () => {
                   })}
                 />
                 <Checkbox
+                  disabled
                   mt="sm"
                   color="lime.4"
                   iconColor="dark.8"
                   size="sm"
-                  label="New Follower"
+                  label="New Follower (Coming soon)"
                   key={form.key("newFollowerNotifications")}
                   {...form.getInputProps("newFollowerNotifications", {
                     type: "checkbox",
                   })}
                 />
                 <Checkbox
+                  disabled
                   mt="sm"
                   color="lime.4"
                   iconColor="dark.8"
                   size="sm"
-                  label="New reactions"
+                  label="New reactions (Coming Soon)"
                   key={form.key("newReactionNotifications")}
                   {...form.getInputProps("newReactionNotifications", {
                     type: "checkbox",

@@ -67,8 +67,8 @@ model User {
     userBadges               UserBadge[]
     userNotification         UserNotification[]
     newCommentNotifications  Boolean            @default(true)
-    newFollowerNotifications Boolean            @default(true)
-    newReactionNotifications Boolean            @default(true)
+    newFollowerNotifications Boolean            @default(false)
+    newReactionNotifications Boolean            @default(false)
 }
 
 model UserInvitation {
