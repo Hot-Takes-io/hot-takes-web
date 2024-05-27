@@ -18,12 +18,15 @@ import { useForm } from "@mantine/form";
 
 import CommentCard from "../Comment/CommentCard";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import SignInButton from "../SignInButton";
 
 type Props = ContextModalProps<{ takeId: number }>;
 
 const TakeModalView = ({ innerProps }: Props) => {
   const utils = api.useUtils();
   const router = useRouter();
+  const session = useSession();
   const { data: comments } = api.comment.getTakeComments.useQuery({
     takeId: innerProps.takeId,
   });
@@ -91,6 +94,7 @@ const TakeModalView = ({ innerProps }: Props) => {
         onSubmit={form.onSubmit((values) => handlePostComment(values.comment))}
       >
         <Textarea
+          disabled={!session.data?.user.id}
           mt="sm"
           rows={4}
           key={form.key("comment")}
@@ -98,9 +102,13 @@ const TakeModalView = ({ innerProps }: Props) => {
         />
 
         <Flex justify="end" mt="sm">
-          <Button type="submit" leftSection={<IconSend />}>
-            <Text>Send</Text>
-          </Button>
+          {session.data?.user.id ? (
+            <Button type="submit" leftSection={<IconSend />}>
+              <Text>Send</Text>
+            </Button>
+          ) : (
+            <SignInButton />
+          )}
         </Flex>
       </form>
     </Box>

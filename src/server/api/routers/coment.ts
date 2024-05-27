@@ -1,6 +1,10 @@
 import { z } from "zod";
 
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "~/server/api/trpc";
 
 export const commentRouter = createTRPCRouter({
   create: protectedProcedure
@@ -14,7 +18,7 @@ export const commentRouter = createTRPCRouter({
         },
       });
     }),
-  getTakeComments: protectedProcedure
+  getTakeComments: publicProcedure
     .input(z.object({ takeId: z.number() }))
     .query(async ({ ctx, input }) => {
       return ctx.db.comment.findMany({

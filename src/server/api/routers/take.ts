@@ -132,7 +132,7 @@ export const takeRouter = createTRPCRouter({
       });
       return result;
     }),
-  getOneTakeWithComments: protectedProcedure
+  getOneTakeWithComments: publicProcedure
     .input(z.object({ takeId: z.number() }))
     .query(async ({ ctx, input }) => {
       return ctx.db.take.findUnique({
