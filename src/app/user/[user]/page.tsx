@@ -79,68 +79,71 @@ const UserView = ({ params }: { params: { user: string } }) => {
           offsetScrollbars
         >
           <Box px="xl" flex="1">
-            <Flex gap="md">
+            <Flex gap="md" wrap="wrap">
               <Box>
-                <Box>
-                  <Image
-                    radius="xl"
-                    component={NextImage}
-                    src={user.image ?? ""}
-                    width={256}
-                    height={256}
-                    alt="User image"
-                    maw={256}
-                  />
-                </Box>
-                <Box>
-                  <Flex>
-                    {user.name && <Title order={1}>{user.name}</Title>}
-                  </Flex>
-                  <Title order={2}>@{user.handle}</Title>
-                </Box>
-                <Box>
+                <Image
+                  radius="xl"
+                  component={NextImage}
+                  src={user.image ?? ""}
+                  width={256}
+                  height={256}
+                  alt="User image"
+                  maw={256}
+                />
+              </Box>
+              <Box>
+                <Flex>{user.name && <Title order={1}>{user.name}</Title>}</Flex>
+                <Title order={2}>@{user.handle}</Title>
+              </Box>
+              <Flex flex="1" direction="column" miw="300px">
+                <Flex justify="center">
                   <Title mt="sm" order={5}>
                     Badges
                   </Title>
-                  <Flex p="sm" gap="sm">
-                    {user.userBadges.map((userBadge) => (
-                      <ProfileBadge
-                        key={userBadge.id}
-                        size={ProfileBadgeSize.xl}
-                        image={userBadge.imageURL}
-                        name={userBadge.name}
-                        withLink
-                      />
-                    ))}
-                  </Flex>
-                </Box>
-              </Box>
-
-              <Flex direction="column" flex="1" h="400px">
-                <RichEditor
-                  content={user.bio as Content}
-                  readonly={!isAccountOwner || !isEditingBio}
-                  onSubmit={(content) => {
-                    updateUser({ bio: content });
-                  }}
-                  submitLabel="Update Bio"
-                  cancelLabel="Cancel"
-                  keepContentOnCancel
-                  onCancel={() => setIsEditingBio(false)}
-                  mah={337}
-                />
-                {!isEditingBio && (
-                  <Flex py="sm" justify="flex-end">
-                    <Button onClick={() => setIsEditingBio(true)}>
-                      Edit Bio
-                    </Button>
-                  </Flex>
-                )}
+                </Flex>
+                <Flex p="sm" gap="sm" wrap="wrap">
+                  {user.userBadges.map((userBadge) => (
+                    <ProfileBadge
+                      key={userBadge.id}
+                      size={ProfileBadgeSize.xl}
+                      image={userBadge.imageURL}
+                      name={userBadge.name}
+                      withLink
+                    />
+                  ))}
+                </Flex>
               </Flex>
             </Flex>
 
+            <Flex
+              direction="column"
+              flex="1"
+              h="400px"
+              mt="sm"
+              align="space-between"
+            >
+              <RichEditor
+                content={user.bio as Content}
+                readonly={!isAccountOwner || !isEditingBio}
+                onSubmit={(content) => {
+                  updateUser({ bio: content });
+                }}
+                submitLabel="Update Bio"
+                cancelLabel="Cancel"
+                keepContentOnCancel
+                onCancel={() => setIsEditingBio(false)}
+                mah={337}
+              />
+              {!isEditingBio && (
+                <Flex py="sm" justify="flex-end">
+                  <Button onClick={() => setIsEditingBio(true)}>
+                    Edit Bio
+                  </Button>
+                </Flex>
+              )}
+            </Flex>
             <Flex wrap="wrap" flex="1" gap="sm">
-              <Box flex="2">
+              <Box flex="3">
                 <Title order={4}>Takes</Title>
                 {userTakes?.map((take) => (
                   <TakeCard
@@ -158,7 +161,7 @@ const UserView = ({ params }: { params: { user: string } }) => {
                   />
                 ))}
               </Box>
-              <Flex direction="column" flex="1" gap="sm">
+              <Flex direction="column" flex="3" gap="sm" miw="300px">
                 <Title order={4}>Comments</Title>
                 {userComments?.map((comment) => (
                   <Card
