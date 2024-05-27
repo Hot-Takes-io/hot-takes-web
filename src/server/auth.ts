@@ -1,7 +1,7 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 
 import {
-  // type Profile,
+  type Profile,
   getServerSession,
   type DefaultSession,
   type NextAuthOptions,
@@ -9,7 +9,7 @@ import {
 import { type Adapter } from "next-auth/adapters";
 
 import EmailProvider from "next-auth/providers/email";
-// import GitHubProvider from "next-auth/providers/github";
+import GitHubProvider from "next-auth/providers/github";
 
 import { db } from "~/server/db";
 import sendEmail, {
@@ -18,7 +18,7 @@ import sendEmail, {
   EmailTemplate,
 } from "./utils/sendEmail";
 import { secondsToHours } from "date-fns";
-// import { env } from "~/env";
+import { env } from "~/env";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -43,10 +43,10 @@ declare module "next-auth" {
   }
 }
 
-// interface ExtendedProfile extends Profile {
-//   login: string;
-//   bio: string;
-// }
+interface ExtendedProfile extends Profile {
+  login: string;
+  bio: string;
+}
 
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
@@ -63,40 +63,45 @@ export const authOptions: NextAuthOptions = {
         handle: user.handle,
       },
     }),
-    signIn: async ({ user }) => {
+    signIn: async ({ user, account, profile }) => {
       if (!user.email) {
         return false;
       }
-      // if (account?.provider === "github") {
-      //   const githubProfile = profile as ExtendedProfile;
-      //   const dbUser = await db.user.findFirst({
-      //     where: { email: user.email },
-      //   });
+      if (account?.provider === "github") {
+        const githubProfile = profile as ExtendedProfile;
+        const dbUser = await db.user.findFirst({
+          where: { email: user.email },
+        });
 
-      //   if (!dbUser) {
-      //     await db.user.create({
-      //       data: {
-      //         email: user.email,
-      //         name: user.name,
-      //         image: user.image,
-      //         githubLogin: githubProfile.login,
-      //         handle: githubProfile.login,
-      //         bio: {
-      //           type: "doc",
-      //           content: [
-      //             {
-      //               type: "paragraph",
-      //               attrs: { textAlign: "left" },
-      //               content: [
-      //                 { text: `${githubProfile.bio ?? ""}`, type: "text" },
-      //               ],
-      //             },
-      //           ],
-      //         },
-      //       },
-      //     });
-      //   }
-      // }
+        if (!dbUser) {
+          const isHandleTaken = await db.user.findFirst({
+            where: { handle: githubProfile.login },
+          });
+
+          const userData = {
+            email: user.email,
+            name: user.name,
+            image: user.image,
+            githubLogin: githubProfile.login,
+            handle: !isHandleTaken ? githubProfile.login : null,
+            bio: {
+              type: "doc",
+              content: [
+                {
+                  type: "paragraph",
+                  attrs: { textAlign: "left" },
+                  content: [
+                    { text: `${githubProfile.bio ?? ""}`, type: "text" },
+                  ],
+                },
+              ],
+            },
+          };
+          await db.user.create({
+            data: userData,
+          });
+        }
+      }
       const invitation = await db.userInvitation.findUnique({
         where: { email: user.email },
       });
@@ -136,11 +141,11 @@ export const authOptions: NextAuthOptions = {
         });
       },
     }),
-    // GitHubProvider({
-    //   clientId: env.GITHUB_ID,
-    //   clientSecret: env.GITHUB_SECRET,
-    //   allowDangerousEmailAccountLinking: true,
-    // }),
+    GitHubProvider({
+      clientId: env.GITHUB_ID,
+      clientSecret: env.GITHUB_SECRET,
+      allowDangerousEmailAccountLinking: true,
+    }),
     /**
      * ...add more providers here.
      *
