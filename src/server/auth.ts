@@ -19,6 +19,7 @@ import sendEmail, {
 } from "./utils/sendEmail";
 import { secondsToHours } from "date-fns";
 import { env } from "~/env";
+import Logger from "./utils/logger";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -31,6 +32,7 @@ declare module "next-auth" {
     user: {
       id: string;
       handle?: string;
+      isSuperAdmin?: boolean;
       // ...other properties
       // role: UserRole;
     } & DefaultSession["user"];
@@ -38,6 +40,7 @@ declare module "next-auth" {
 
   interface User {
     handle?: string;
+    isSuperAdmin?: boolean;
     //   // ...other properties
     //   // role: UserRole;
   }
@@ -57,6 +60,20 @@ export const authOptions: NextAuthOptions = {
   theme: {
     logo: "/logos/hot-takes.png",
   },
+  events: {
+    signIn: async ({ user }) => {
+      Logger("info", "User signed in", user);
+      if (!user.email) {
+        return;
+      }
+      await db.user.update({
+        where: { email: user.email },
+        data: {
+          lastLogin: new Date(),
+        },
+      });
+    },
+  },
   callbacks: {
     session: ({ session, user }) => ({
       ...session,
@@ -64,6 +81,7 @@ export const authOptions: NextAuthOptions = {
         ...session.user,
         id: user.id,
         handle: user.handle,
+        isSuperAdmin: user.isSuperAdmin,
       },
     }),
     signIn: async ({ user, account, profile }) => {

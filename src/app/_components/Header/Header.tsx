@@ -187,6 +187,11 @@ const Header = () => {
                 <Avatar className="pointer" src={userData.image} />
               </Menu.Target>
               <Menu.Dropdown>
+                {userData.isSuperAdmin && (
+                  <Anchor component={Link} td="none" href={`/admin`}>
+                    <Menu.Item leftSection={<IconUser />}>Admin</Menu.Item>
+                  </Anchor>
+                )}
                 <Anchor
                   component={Link}
                   td="none"

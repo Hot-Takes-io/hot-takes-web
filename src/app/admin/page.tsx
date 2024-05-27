@@ -1,8 +1,8 @@
 import {
   Anchor,
   Avatar,
-  Box,
   Flex,
+  ScrollAreaAutosize,
   Table,
   TableTbody,
   TableTh,
@@ -18,7 +18,7 @@ import { api } from "~/trpc/server";
 const Admin = async () => {
   const session = await getServerAuthSession();
 
-  if (session?.user.email !== "suarezluis@gmail.com") {
+  if (!session?.user.isSuperAdmin) {
     return (
       <Flex flex="1" justify="center" align="center">
         <Title order={1}>You are not authorized to view this page</Title>
@@ -27,9 +27,9 @@ const Admin = async () => {
   }
   const users = await api.user.getAllUsers();
   return (
-    <Flex flex="1" p="md">
-      <Box>
-        <Title order={4}>Users</Title>
+    <Flex flex="1" p="md" direction="column">
+      <Title order={4}>Users</Title>
+      <ScrollAreaAutosize mah="calc(100vh - 120px)">
         <Table striped>
           <TableThead>
             <TableTr>
@@ -42,6 +42,8 @@ const Admin = async () => {
               <TableTh>Following</TableTh>
               <TableTh>Takes</TableTh>
               <TableTh>Comments</TableTh>
+              <TableTh>Providers</TableTh>
+              <TableTh>Last Login</TableTh>
             </TableTr>
           </TableThead>
           <TableTbody>
@@ -60,11 +62,20 @@ const Admin = async () => {
                 <TableTh>{user._count.following}</TableTh>
                 <TableTh>{user._count.takes}</TableTh>
                 <TableTh>{user._count.comments}</TableTh>
+                <TableTh>
+                  email,{" "}
+                  {user.accounts
+                    ?.map((account) => {
+                      return account.provider;
+                    })
+                    .join(", ")}
+                </TableTh>
+                <TableTh>{user.lastLogin?.toLocaleString() ?? ""}</TableTh>
               </TableTr>
             ))}
           </TableTbody>
         </Table>
-      </Box>
+      </ScrollAreaAutosize>
     </Flex>
   );
 };

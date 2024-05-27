@@ -17,6 +17,8 @@ export const userRouter = createTRPCRouter({
         email: true,
         handle: true,
         image: true,
+        lastLogin: true,
+        accounts: true,
         _count: {
           select: {
             followers: { where: { deletedAt: null } },
