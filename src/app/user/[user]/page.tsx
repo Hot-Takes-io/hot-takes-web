@@ -134,7 +134,7 @@ const UserView = ({ params }: { params: { user: string } }) => {
                 onCancel={() => setIsEditingBio(false)}
                 mah={337}
               />
-              {!isEditingBio && (
+              {!isEditingBio && isAccountOwner && (
                 <Flex py="sm" justify="flex-end">
                   <Button onClick={() => setIsEditingBio(true)}>
                     Edit Bio
