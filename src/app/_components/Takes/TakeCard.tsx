@@ -65,6 +65,17 @@ const TakeCard = ({
   });
 
   const handleReaction = (reactionType: TakeReactionType) => {
+    if (!session.data?.user.id) {
+      modals.openContextModal({
+        modal: ModalNames.NeedToSignIn,
+        title: "Are you serious?",
+        innerProps: {
+          action: "react",
+        },
+        size: "md",
+      });
+      return;
+    }
     if (reactionType === currentReaction) {
       return;
     }
