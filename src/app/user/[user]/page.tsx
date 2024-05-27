@@ -97,7 +97,6 @@ const UserView = ({ params }: { params: { user: string } }) => {
                     {user.name && <Title order={1}>{user.name}</Title>}
                   </Flex>
                   <Title order={2}>@{user.handle}</Title>
-                  <Title order={2}>{user.email}</Title>
                 </Box>
                 <Box>
                   <Title mt="sm" order={5}>

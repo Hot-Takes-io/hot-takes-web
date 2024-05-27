@@ -24,6 +24,7 @@ export const commentRouter = createTRPCRouter({
             select: { id: true, name: true, handle: true, image: true },
           },
         },
+        orderBy: { createdAt: "asc" },
       });
     }),
   getCommentsByUser: protectedProcedure
