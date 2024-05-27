@@ -77,6 +77,9 @@ export const userRouter = createTRPCRouter({
         email: z.string().email().optional(),
         bio: z.custom<Content | undefined>().optional(),
         image: z.string().url().optional(),
+        newCommentNotifications: z.boolean().optional(),
+        newFollowerNotifications: z.boolean().optional(),
+        newReactionNotifications: z.boolean().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -86,6 +89,9 @@ export const userRouter = createTRPCRouter({
         | { email: string }
         | { bio: JSON }
         | { image: string }
+        | { newCommentNotifications: boolean }
+        | { newFollowerNotifications: boolean }
+        | { newReactionNotifications: boolean }
         | object = { ...input };
 
       const user = await ctx.db.user.update({

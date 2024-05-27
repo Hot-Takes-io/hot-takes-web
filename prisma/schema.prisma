@@ -45,27 +45,30 @@ model Session {
 }
 
 model User {
-    id               String             @id @default(cuid())
-    createdAt        DateTime           @default(now())
-    updatedAt        DateTime           @updatedAt
-    name             String?
-    email            String?            @unique
-    emailVerified    DateTime?
-    image            String?
-    githubLogin      String?
-    accounts         Account[]
-    sessions         Session[]
-    bio              Json               @default("{}")
-    handle           String?            @unique
-    takes            Take[]
-    comments         Comment[]
-    alterEgos        AlterEgo[]
-    followers        Follow[]           @relation("Follower")
-    following        Follow[]           @relation("Following")
-    takeReactions    TakeReaction[]
-    userInvitations  UserInvitation[]
-    userBadges       UserBadge[]
-    userNotification UserNotification[]
+    id                       String             @id @default(cuid())
+    createdAt                DateTime           @default(now())
+    updatedAt                DateTime           @updatedAt
+    name                     String?
+    email                    String?            @unique
+    emailVerified            DateTime?
+    image                    String?
+    githubLogin              String?
+    accounts                 Account[]
+    sessions                 Session[]
+    bio                      Json               @default("{}")
+    handle                   String?            @unique
+    takes                    Take[]
+    comments                 Comment[]
+    alterEgos                AlterEgo[]
+    followers                Follow[]           @relation("Follower")
+    following                Follow[]           @relation("Following")
+    takeReactions            TakeReaction[]
+    userInvitations          UserInvitation[]
+    userBadges               UserBadge[]
+    userNotification         UserNotification[]
+    newCommentNotifications  Boolean            @default(true)
+    newFollowerNotifications Boolean            @default(true)
+    newReactionNotifications Boolean            @default(true)
 }
 
 model UserInvitation {

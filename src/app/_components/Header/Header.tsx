@@ -10,6 +10,7 @@ import {
   Modal,
   TextInput,
   Button,
+  Checkbox,
 } from "@mantine/core";
 import { signOut, useSession } from "next-auth/react";
 import CreateTake from "../Takes/CreateTake";
@@ -30,6 +31,7 @@ import { useForm } from "@mantine/form";
 import { z } from "zod";
 import { api } from "~/trpc/react";
 import { notifications } from "@mantine/notifications";
+import Logger from "~/server/utils/logger";
 
 const Header = () => {
   const router = useRouter();
@@ -68,6 +70,9 @@ const Header = () => {
       name: userData?.name ?? "",
       handle: userData?.handle ?? "",
       email: userData?.email ?? "",
+      newCommentNotifications: userData?.newCommentNotifications,
+      newFollowerNotifications: userData?.newFollowerNotifications,
+      newReactionNotifications: userData?.newReactionNotifications,
     },
     validate: {
       email: (value) => {
@@ -98,6 +103,9 @@ const Header = () => {
         }
         return null;
       },
+      newCommentNotifications: () => null,
+      newFollowerNotifications: () => null,
+      newReactionNotifications: () => null,
     },
   });
 
@@ -108,6 +116,9 @@ const Header = () => {
         name: userData.name ?? "",
         handle: userData.handle ?? "",
         email: userData.email ?? "",
+        newCommentNotifications: userData.newCommentNotifications,
+        newFollowerNotifications: userData.newFollowerNotifications,
+        newReactionNotifications: userData.newReactionNotifications,
       });
     }
   }, [form, userData?.id, userData]);
@@ -125,7 +136,7 @@ const Header = () => {
     }
     return false;
   }, [userData]);
-
+  Logger("userData", userData);
   const checkHandle = useDebouncedCallback(async (handle: string) => {
     const { isTaken } = await utils.user.isHandleTaken.fetch({
       handle,
@@ -209,9 +220,7 @@ const Header = () => {
               onClose={close}
               withCloseButton={!forceSettings}
             >
-              <Flex justify="center">
-                <Title order={3}>User Settings</Title>
-              </Flex>
+              <Title order={4}>User Settings</Title>
               <form
                 onSubmit={form.onSubmit((values) => {
                   if (isTaken) {
@@ -252,6 +261,42 @@ const Header = () => {
                     disabled
                   />
                 </Flex>
+                <Title order={4} mt="lg">
+                  Email Notifications
+                </Title>
+                <Checkbox
+                  mt="sm"
+                  color="lime.4"
+                  iconColor="dark.8"
+                  size="sm"
+                  label="New Comment"
+                  key={form.key("newCommentNotifications")}
+                  {...form.getInputProps("newCommentNotifications", {
+                    type: "checkbox",
+                  })}
+                />
+                <Checkbox
+                  mt="sm"
+                  color="lime.4"
+                  iconColor="dark.8"
+                  size="sm"
+                  label="New Follower"
+                  key={form.key("newFollowerNotifications")}
+                  {...form.getInputProps("newFollowerNotifications", {
+                    type: "checkbox",
+                  })}
+                />
+                <Checkbox
+                  mt="sm"
+                  color="lime.4"
+                  iconColor="dark.8"
+                  size="sm"
+                  label="New reactions"
+                  key={form.key("newReactionNotifications")}
+                  {...form.getInputProps("newReactionNotifications", {
+                    type: "checkbox",
+                  })}
+                />
                 <Flex justify="flex-end">
                   <Button
                     mt="lg"

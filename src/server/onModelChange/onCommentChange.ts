@@ -44,7 +44,7 @@ export const onCommentChange = async (
           },
         });
         console.log("DEBUG: Sending email to", take.createdBy.email);
-        if (take.createdBy.email) {
+        if (take.createdBy.email && take.createdBy.newCommentNotifications) {
           await sendEmail({
             sender: EmailSender.NOTIFICATIONS,
             recipient: take.createdBy.email,

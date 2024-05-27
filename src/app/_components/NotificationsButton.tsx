@@ -8,6 +8,8 @@ import {
   ThemeIcon,
   Title,
   Avatar,
+  ScrollAreaAutosize,
+  Flex,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { TakeReactionType } from "@prisma/client";
@@ -33,6 +35,12 @@ const NotificationsButton = () => {
 
   const { mutate: markAsRead } =
     api.userNotification.markUserNotificationAsRead.useMutation({
+      onSettled: () => {
+        void utils.userNotification.invalidate();
+      },
+    });
+  const { mutate: markAllAsRead } =
+    api.userNotification.markAllUserNotificationAsRead.useMutation({
       onSettled: () => {
         void utils.userNotification.invalidate();
       },
@@ -104,75 +112,89 @@ const NotificationsButton = () => {
           </ThemeIcon>
         </Menu.Target>
         <Menu.Dropdown>
-          <Menu.Label>Notifications</Menu.Label>
+          <Flex justify="space-between">
+            <Menu.Label>Notifications</Menu.Label>
+            <Button
+              size="xs"
+              variant="transparent"
+              onClick={() => {
+                markAllAsRead();
+              }}
+            >
+              Mark all as read
+            </Button>
+          </Flex>
           <Menu.Divider />
-          {isLoading ? (
-            <Loader />
-          ) : (
-            notifications?.map((notification) => (
-              <Menu.Item key={notification.id}>
-                {notification.commentBody && (
-                  <Button
-                    variant="transparent"
-                    color={notification.readAt ? "default" : "blue"}
-                    onClick={() =>
-                      handleOpenNotification({
-                        notificationId: notification.id,
-                        takeId: notification.takeId,
-                      })
-                    }
-                  >
-                    New comment:&nbsp;
-                    <Text maw="240px" truncate="end" ta="left">
-                      &quot;{notification.commentBody}
-                    </Text>
-                    &quot;
-                  </Button>
-                )}
-                {notification.reactionType && (
-                  <Button
-                    variant="transparent"
-                    color={notification.readAt ? "default" : "blue"}
-                    onClick={() =>
-                      handleOpenNotification({
-                        notificationId: notification.id,
-                        takeId: notification.takeId,
-                      })
-                    }
-                    rightSection={
-                      <Title order={2}>
-                        {notification.reactionType === TakeReactionType.Hot_Take
-                          ? "🔥"
-                          : "💩"}
-                      </Title>
-                    }
-                  >
-                    You got a new Reaction:
-                  </Button>
-                )}
-                {notification.followerId && (
-                  <Button
-                    variant="transparent"
-                    color={notification.readAt ? "default" : "blue"}
-                    onClick={() =>
-                      handleOpenNotification({
-                        notificationId: notification.id,
-                        userHandle: notification.follower?.follower.handle,
-                      })
-                    }
-                  >
-                    <Avatar
-                      src={notification.follower?.follower.image}
-                      size="sm"
-                      mr="sm"
-                    />
-                    @{notification.follower?.follower.handle} started following
-                    you
-                  </Button>
-                )}
-              </Menu.Item>
-            ))
-          )}
+          <ScrollAreaAutosize mah="80vh">
+            {isLoading ? (
+              <Loader />
+            ) : (
+              notifications?.map((notification) => (
+                <Menu.Item key={notification.id}>
+                  {notification.commentBody && (
+                    <Button
+                      variant="transparent"
+                      color={notification.readAt ? "default" : "blue"}
+                      onClick={() =>
+                        handleOpenNotification({
+                          notificationId: notification.id,
+                          takeId: notification.takeId,
+                        })
+                      }
+                    >
+                      New comment:&nbsp;
+                      <Text maw="200px" truncate="end" ta="left">
+                        &quot;{notification.commentBody}
+                      </Text>
+                      &quot;
+                    </Button>
+                  )}
+                  {notification.reactionType && (
+                    <Button
+                      variant="transparent"
+                      color={notification.readAt ? "default" : "blue"}
+                      onClick={() =>
+                        handleOpenNotification({
+                          notificationId: notification.id,
+                          takeId: notification.takeId,
+                        })
+                      }
+                      rightSection={
+                        <Title order={2}>
+                          {notification.reactionType ===
+                          TakeReactionType.Hot_Take
+                            ? "🔥"
+                            : "💩"}
+                        </Title>
+                      }
+                    >
+                      You got a new Reaction:
+                    </Button>
+                  )}
+                  {notification.followerId && (
+                    <Button
+                      variant="transparent"
+                      color={notification.readAt ? "default" : "blue"}
+                      onClick={() =>
+                        handleOpenNotification({
+                          notificationId: notification.id,
+                          userHandle: notification.follower?.follower.handle,
+                        })
+                      }
+                    >
+                      <Avatar
+                        src={notification.follower?.follower.image}
+                        size="sm"
+                        mr="sm"
+                      />
+                      @{notification.follower?.follower.handle} started
+                      following you
+                    </Button>
+                  )}
+                </Menu.Item>
+              ))
+            )}
+          </ScrollAreaAutosize>
         </Menu.Dropdown>
       </Menu>
     </Box>

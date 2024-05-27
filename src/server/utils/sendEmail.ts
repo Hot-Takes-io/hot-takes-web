@@ -4,7 +4,7 @@ import { env } from "~/env";
 sgMail.setApiKey(env.SENDGRID_API_KEY);
 
 export enum EmailSender {
-  AUTHENTICATION = "authentication@hot-takes.io",
+  AUTHENTICATION = "Hot-Takes.io Authentication <authentication@hot-takes.io>",
   NO_REPLY = "no-reply@hot-takes.io",
   SUPPORT = "support@hot-takes.io",
   CONTACT = "contact@hot-takes.io",
