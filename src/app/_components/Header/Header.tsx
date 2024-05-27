@@ -31,7 +31,6 @@ import { useForm } from "@mantine/form";
 import { z } from "zod";
 import { api } from "~/trpc/react";
 import { notifications } from "@mantine/notifications";
-import Logger from "~/server/utils/logger";
 
 const Header = () => {
   const router = useRouter();
@@ -136,7 +135,6 @@ const Header = () => {
     }
     return false;
   }, [userData]);
-  Logger("userData", userData);
   const checkHandle = useDebouncedCallback(async (handle: string) => {
     const { isTaken } = await utils.user.isHandleTaken.fetch({
       handle,

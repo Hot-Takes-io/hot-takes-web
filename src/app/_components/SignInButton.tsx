@@ -10,7 +10,7 @@ const SignInButton = () => {
       loading={isSigningIn}
       onClick={async () => {
         setIsSigningIn(true);
-        signIn("github")
+        signIn()
           .then((params) => {
             console.info("Signed in", params);
           })

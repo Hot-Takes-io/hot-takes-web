@@ -54,6 +54,9 @@ interface ExtendedProfile extends Profile {
  * @see https://next-auth.js.org/configuration/options
  */
 export const authOptions: NextAuthOptions = {
+  theme: {
+    logo: "/logos/hot-takes.png",
+  },
   callbacks: {
     session: ({ session, user }) => ({
       ...session,
