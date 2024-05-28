@@ -68,16 +68,16 @@ const AllTakesView = () => {
         direction="column"
         align="center"
         pt="xl"
+        px="sm"
       >
         <Title order={4} mb="sm">
           Hot-Takes.io is
         </Title>
         <iframe
-          width="280"
-          height="158"
+          width="250"
+          height="140"
           src="https://www.youtube.com/embed/SV-omrkCpDo?si=uoPIQTClBj-1pKy4"
           title="YouTube video player"
-          frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           referrerPolicy="strict-origin-when-cross-origin"
           allowFullScreen
