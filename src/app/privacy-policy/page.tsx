@@ -11,7 +11,7 @@ const PrivacyPolicy = () => {
   return (
     <Container>
       <Title order={1}>Privacy Policy</Title>
-      <ScrollAreaAutosize mah="calc(100vh - 150px)" pt="sm">
+      <ScrollAreaAutosize mah="calc(100vh - 150px)" pt="sm" offsetScrollbars>
         <Text>
           <strong>Introduction</strong>
           <br />
