@@ -1,5 +1,11 @@
 import React from "react";
-import { Container, Title, Text, ScrollAreaAutosize } from "@mantine/core";
+import {
+  Container,
+  Title,
+  Text,
+  ScrollAreaAutosize,
+  Anchor,
+} from "@mantine/core";
 
 const PrivacyPolicy = () => {
   return (
@@ -129,8 +135,8 @@ const PrivacyPolicy = () => {
           </li>
         </ul>
         If you make a request, we have one month to respond to you. If you would
-        like to exercise any of these rights, please contact us at our email:
-        [your@email.com](mailto:your@email.com).
+        like to exercise any of these rights, please contact us via{" "}
+        <Anchor href="mailto:support@hot-takes.io">email</Anchor>.
         <Title order={2}>Changes to This Privacy Policy</Title>
         <Text>
           We may update our Privacy Policy from time to time. We will notify you
@@ -142,7 +148,7 @@ const PrivacyPolicy = () => {
         <Title order={2}>Contact Us</Title>
         <Text>
           If you have any questions about this Privacy Policy, please contact us
-          at [your@email.com](mailto:your@email.com).
+          via <Anchor href="mailto:support@hot-takes.io">email</Anchor>.
         </Text>
         <Text>
           By using Hot-Takes.io, you acknowledge that you have read, understood,
