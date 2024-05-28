@@ -13,6 +13,7 @@ import {
   Button,
   Text,
   Skeleton,
+  Box,
 } from "@mantine/core";
 
 import { IconDotsVertical } from "@tabler/icons-react";
@@ -156,13 +157,13 @@ const TakeCard = ({
               >
                 🔥
               </ActionIcon>
-              <Badge variant="default" size="xl">
+              <Box>
                 {isLoading ? (
                   <Loader color="orange" size="xs" type="bars" />
                 ) : (
-                  reactions?.Hot_Take
+                  <Text>x{reactions?.Hot_Take}</Text>
                 )}
-              </Badge>
+              </Box>
               <ActionIcon
                 onClick={() => handleReaction(TakeReactionType.Hot_Shit)}
                 variant={
@@ -180,13 +181,13 @@ const TakeCard = ({
               >
                 💩
               </ActionIcon>
-              <Badge variant="default" size="xl">
+              <Box>
                 {isLoading ? (
                   <Loader color="brown" size="xs" type="bars" />
                 ) : (
-                  reactions?.Hot_Shit
+                  <Text>x{reactions?.Hot_Shit}</Text>
                 )}
-              </Badge>
+              </Box>
             </Flex>
             <Flex align="center">
               {noCommentLink ? (
