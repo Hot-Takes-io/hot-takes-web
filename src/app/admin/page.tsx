@@ -38,10 +38,11 @@ const Admin = async () => {
               <TableTh>Handle</TableTh>
               <TableTh>Name</TableTh>
               <TableTh>Email</TableTh>
-              <TableTh>Followers</TableTh>
-              <TableTh>Following</TableTh>
               <TableTh>Takes</TableTh>
               <TableTh>Comments</TableTh>
+              <TableTh>Reactions</TableTh>
+              <TableTh>Followers</TableTh>
+              <TableTh>Following</TableTh>
               <TableTh>Providers</TableTh>
               <TableTh>Last Login</TableTh>
             </TableTr>
@@ -58,10 +59,11 @@ const Admin = async () => {
                 <TableTh>{user.handle}</TableTh>
                 <TableTh>{user.name}</TableTh>
                 <TableTh>{user.email}</TableTh>
-                <TableTh>{user._count.followers}</TableTh>
-                <TableTh>{user._count.following}</TableTh>
                 <TableTh>{user._count.takes}</TableTh>
                 <TableTh>{user._count.comments}</TableTh>
+                <TableTh>{user._count.takeReactions}</TableTh>
+                <TableTh>{user._count.followers}</TableTh>
+                <TableTh>{user._count.following}</TableTh>
                 <TableTh>
                   email,{" "}
                   {user.accounts

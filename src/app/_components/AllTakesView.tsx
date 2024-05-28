@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Flex, Tabs } from "@mantine/core";
+import { Box, Flex, Tabs, Title } from "@mantine/core";
 import TakeList from "./Takes/TakeList";
 
 import { useSession } from "next-auth/react";
@@ -62,7 +62,30 @@ const AllTakesView = () => {
           </Tabs.Panel>
         </Tabs>
       </Flex>
-      <Box flex="1" className="hide-on-mobile"></Box>
+      <Flex
+        flex="1"
+        className="hide-on-mobile"
+        direction="column"
+        align="center"
+        pt="xl"
+      >
+        <Title order={4} mb="sm">
+          Hot-Takes.io is
+        </Title>
+        <iframe
+          width="280"
+          height="158"
+          src="https://www.youtube.com/embed/SV-omrkCpDo?si=uoPIQTClBj-1pKy4"
+          title="YouTube video player"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allowFullScreen
+        ></iframe>
+        <Title order={4} mt="sm">
+          Made in Texas
+        </Title>
+      </Flex>
     </Flex>
   );
 };

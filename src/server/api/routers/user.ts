@@ -25,6 +25,7 @@ export const userRouter = createTRPCRouter({
             following: { where: { deletedAt: null } },
             takes: true,
             comments: true,
+            takeReactions: true,
           },
         },
       },
