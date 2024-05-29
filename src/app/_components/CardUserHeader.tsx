@@ -1,11 +1,12 @@
 "use client";
 
-import { Anchor, Avatar, Box, Flex, Title, Text } from "@mantine/core";
+import { Anchor, Avatar, Box, Flex, Title, Text, Tooltip } from "@mantine/core";
 import { formatDistanceToNow } from "date-fns";
 import Link from "next/link";
 import React from "react";
 import FollowUserButton from "./FollowUserButton";
 import { api } from "~/trpc/react";
+import Image from "next/image";
 
 type Props = {
   userHandle: string;
@@ -26,7 +27,21 @@ const CardUserHeader = ({ createdAt, userId }: Props) => {
       </Anchor>
       <Flex wrap="wrap" gap="sm">
         <Box>
-          <Title order={5}>{name}</Title>
+          <Flex gap="xs">
+            <Title order={5}>{name}</Title>
+            <Anchor href={`/profile-badges`}>
+              {user?.userBadges.map((badge) => (
+                <Tooltip key={`${badge.id}-${user.id}`} label={badge.name}>
+                  <Image
+                    src={badge.imageURL}
+                    width={24}
+                    height={24}
+                    alt={badge.name}
+                  />
+                </Tooltip>
+              ))}
+            </Anchor>
+          </Flex>
           <Text size="xs">@{handle}</Text>
         </Box>
         <Flex wrap={"wrap"} justify="flex-end" direction="column">
